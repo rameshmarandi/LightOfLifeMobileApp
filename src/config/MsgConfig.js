@@ -16,6 +16,7 @@ const DrawerMenu = {
 }
 
  const HomeModule = {
+    specialDay : "Momentous Occasion",
    firstHeaderText : "Daily Verbs"
 } 
 

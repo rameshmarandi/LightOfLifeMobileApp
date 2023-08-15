@@ -4,6 +4,7 @@ import googleicon from '../../assets/googleicon.png';
 import cross from '../../assets/cross.png';
 import church_logo from '../../assets/church_logo.png';
 import church_logo_origianl from '../../assets/church_logo_origianl.png';
+import dailyVerbsBanner from '../../assets/dailyVerbsBanner.jpg';
 
 const authIcons = {
   FliickLogo,
@@ -14,6 +15,7 @@ const homeIcons = {
 church_logo_origianl,
   cross,
   church_logo,
+  dailyVerbsBanner
 };
 export default assets = {
   ...authIcons,

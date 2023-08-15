@@ -5,7 +5,9 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Dimensions,
+  StyleSheet,
   Alert,
+  Image,
   Animated,
   useWindowDimensions,
   FlatList,
@@ -29,13 +31,33 @@ import CustomHeader from '../../../components/CustomHeader';
 import SectionHeader from '../../../components/SectionHeader';
 import MsgConfig from '../../../config/MsgConfig';
 import {TabView, SceneMap} from 'react-native-tab-view';
-import {SCREENWIDTH, getResHeight} from '../../../utility/responsive';
+import {
+  SCREENWIDTH,
+  getFontSize,
+  getResHeight,
+} from '../../../utility/responsive';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+
+import {Button} from 'react-native-elements';
+
+const {width} = Dimensions.get('window');
+const itemWidth = width - 40; // Adjust this according to your layout
+
+const images = [
+
+  'https://static.officeholidays.com/images/1280x853c/india-flag-01.jpg',
+'https://www.thestatesman.com/wp-content/uploads/2020/08/i-2.jpg',
+  'https://nenow.in/wp-content/uploads/2022/08/Independence-Day-2022.png',
+
+  'https://im.indiatimes.in/content/2023/Aug/Independence-Day-speech4_64ca45b727e08.jpg',
+];
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       darkMode: false,
+      activeSlide: 0,
     };
   }
   async componentDidMount() {
@@ -60,6 +82,21 @@ class HomePage extends Component {
       store.dispatch(isDarkMode(false));
     }
   };
+  _renderItem = ({item}) => {
+    return (
+      <View
+        style={[
+          styles.slide,
+          {
+            borderRadius: 10,
+            overflow: 'hidden',
+          },
+        ]}>
+        <Image source={{uri: item}} style={styles.image} />
+      </View>
+    );
+  };
+
   render() {
     const {isDarkMode, navigation} = this.props;
     return (
@@ -77,12 +114,7 @@ class HomePage extends Component {
           />
         </View>
 
-        <View
-          style={
-            {
-              // paddingHorizontal: '5%',
-            }
-          }>
+        <View style={{}}>
           <FlatList
             data={[0, 1, 2, 3, 4, 5]}
             renderItem={({item, index}) => {
@@ -90,12 +122,59 @@ class HomePage extends Component {
                 case 0:
                   return (
                     <>
-                      <SectionHeader
-                        sectionTitle={`${MsgConfig.firstHeaderText}`}
-                      />
-                      <DailyVerbs />
+                      <View
+                        style={{
+                          paddingHorizontal: '7%',
+                          marginTop: '5%',
+                        }}>
+                          <View style={{
+                            marginBottom:"2%"
+                          }}>
+                        <SectionHeader
+                          sectionTitle={`${MsgConfig.specialDay}`}
+                        />
+                        </View>
+                        <View style={styles.container}>
+                          <Carousel
+                            ref={c => (this.carousel = c)}
+                            data={images}
+                            renderItem={this._renderItem}
+                            sliderWidth={width}
+                            itemWidth={itemWidth}
+                            loop={true}
+                            autoplay={true}
+                            autoplayInterval={4000} // 30 seconds
+                            onSnapToItem={index =>
+                              this.setState({activeSlide: index})
+                            }
+                          />
+                          <Pagination
+                            dotsLength={images.length}
+                            activeDotIndex={this.state.activeSlide}
+                            containerStyle={styles.paginationContainer}
+                            dotStyle={styles.paginationDot}
+                            inactiveDotOpacity={0.4}
+                            inactiveDotScale={0.6}
+                          />
+                        </View>
+                      </View>
                     </>
                   )
+
+                case 1:
+                  return (
+                    <>
+                      <View
+                        style={{
+                          paddingHorizontal: '7%',
+                        }}>
+                        <SectionHeader
+                          sectionTitle={`${MsgConfig.firstHeaderText}`}
+                        />
+                      </View>
+                      <DailyVerbs />
+                    </>
+                  );
               }
             }}
           />
@@ -133,365 +212,202 @@ class HomePage extends Component {
 }
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const CARD_WIDTH = SCREEN_WIDTH * 0.7; // Adjust as needed
+const CARD_WIDTH = SCREEN_WIDTH * 0.9;
+//  * 0.9
+//  * 0.8; // Adjust as needed
 
 const languageArray = [
-  { key: 'hindi', tabTitle: 'Hindi', bg: 'blue' },
-  { key: 'english', tabTitle: 'English', bg: 'green' },
-  { key: 'marathi', tabTitle: 'Marathi', bg: 'red' },
+  {key: 'hindi', tabTitle: 'Hindi', bg: 'blue'},
+  {key: 'english', tabTitle: 'English', bg: 'green'},
+  {key: 'marathi', tabTitle: 'Marathi', bg: 'red'},
 ];
 
-const TabBar = ({ tabs, activeIndex, onPress }) => {
+const TabBar = ({tabs, activeIndex, onPress}) => {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+    <View style={{flexDirection: 'row', paddingLeft: '5%', marginTop: '2.5%'}}>
       {tabs.map((tab, index) => (
-        <TouchableOpacity
-          key={tab.key}
-          onPress={() => onPress(index)}
-          style={{
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderBottomWidth:  activeIndex === index ? 2 : 0,
-            borderBottomColor: 'red',
+        // <View
+        //   style={{
+        //     // width:'100%',
+        //     marginBottom:"4%",
+        //     // backgroundColor:'red'
+        //   }}>
+        <Button
+          title={tab.tabTitle}
+          onPress={() => {
+            // LayoutAnimation.easeIneaseOut()
+            onPress(index);
           }}
-        >
-          <Text>{tab.tabTitle}</Text>
-        </TouchableOpacity>
+          titleStyle={{
+            // activeIndex === index ? "red" :
+            color: activeIndex === index ? 'red' : textColorHandler(),
+            fontFamily: theme.font.semiBold,
+            fontSize: getFontSize(11),
+            margin: 0,
+            padding: 0,
+          }}
+          iconContainerStyle={{}}
+          containerStyle={[
+            {
+              width: '30%',
+              height: 45,
+              justifyContent: 'center',
+              backgroundColor: backgroundColorHandler(),
+              borderBottomWidth: activeIndex === index ? 2 : 0,
+              borderBottomColor: theme.color.error,
+              marginBottom: '3.5%',
+              paddingBottom: 0,
+            },
+          ]}
+          buttonStyle={[
+            {
+              width: '100%',
+              height: '100%',
+              backgroundColor: backgroundColorHandler(),
+              paddingBottom: 0,
+            },
+          ]}
+        />
       ))}
     </View>
   );
 };
-
-
-// const DailyVerbs = () => {
-//   const scrollX = useRef(new Animated.Value(0)).current;
-//   const flatListRef = useRef(null);
-
-//   const [activeIndex, setActiveIndex] = useState(0);
-
-//   const handleTabPress = (index) => {
-//     setActiveIndex(index);
-//     flatListRef.current.scrollToIndex({ index, animated: true });
-//   };
-
-//   const handleScroll = Animated.event(
-//     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-//     { useNativeDriver: false }
-//   );
-
-//   const currentIndex = Math.floor(scrollX.interpolate({
-//     inputRange: [-CARD_WIDTH / 2, (languageArray.length - 1) * CARD_WIDTH + CARD_WIDTH / 2],
-//     outputRange: [-1, languageArray.length],
-//   }));
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <FlatList
-//         ref={flatListRef}
-//         data={languageArray}
-//         keyExtractor={(item) => item.key}
-//         horizontal
-//         pagingEnabled
-//         showsHorizontalScrollIndicator={false}
-//         contentContainerStyle={{
-//           flexGrow: 1,
-//           alignItems: 'center',
-//         }}
-//         onScroll={handleScroll}
-//         scrollEventThrottle={16} // Adjust scroll responsiveness
-//         renderItem={({ item, index }) => (
-//           <View
-//             style={{
-//               width: CARD_WIDTH,
-//               marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
-//             }}
-//           >
-//             <View
-//               style={{
-//                 flex: 1,
-//                 justifyContent: 'center',
-//                 alignItems: 'center',
-//                 backgroundColor: item.bg,
-//                 borderRadius: 10,
-//                 padding: 20,
-//                 elevation: 5,
-//               }}
-//             >
-//               <Text>{item.tabTitle} Content</Text>
-//             </View>
-//           </View>
-//         )}
-//         onMomentumScrollEnd={(event) => {
-//           const offsetX = event.nativeEvent.contentOffset.x;
-//           const newIndex = Math.round(offsetX / CARD_WIDTH);
-//           setActiveIndex(newIndex);
-//         }}
-//       />
-//       <TabBar tabs={languageArray} activeIndex={currentIndex} onPress={handleTabPress} />
-//     </View>
-//   );
-// };
 
 const DailyVerbs = () => {
   const [activeTab, setActiveTab] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef(null);
 
-  const handleTabPress = (index) => {
-    flatListRef.current.scrollToIndex({ index, animated: true });
+  const handleTabPress = index => {
+    flatListRef.current.scrollToIndex({index, animated: true});
     setActiveTab(index);
   };
 
   const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-    { useNativeDriver: false }
+    [{nativeEvent: {contentOffset: {x: scrollX}}}],
+    {useNativeDriver: false},
   );
 
   const inputRange = languageArray.map((_, index) => index * CARD_WIDTH);
 
   const translateX = scrollX.interpolate({
     inputRange,
-    outputRange: [SCREEN_WIDTH * 0.05, 0, -SCREEN_WIDTH * 0.05],
+    outputRange: [SCREEN_WIDTH * 0.03, 0, -SCREEN_WIDTH * 0.03],
   });
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
+      <TabBar
+        tabs={languageArray}
+        activeIndex={activeTab}
+        onPress={handleTabPress}
+      />
       <FlatList
         ref={flatListRef}
         data={languageArray}
-        keyExtractor={(item) => item.key}
+        keyExtractor={item => item.key}
         horizontal
+        bounce={false}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        scrollEnabled={false}
         contentContainerStyle={{
           flexGrow: 1,
           alignItems: 'center',
         }}
-        onScroll={handleScroll}
+        // onScroll={handleScroll}
         scrollEventThrottle={16} // Adjust scroll responsiveness
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <Animated.View
             style={{
-              width: CARD_WIDTH,
+              width:
+                // SCREENWIDTH - 15,
+                // marginHorizontal:10,
+                CARD_WIDTH,
+              height: getResHeight(180),
+              overflow: 'hidden',
               marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
-              transform: [{ translateX }],
-            }}
-          >
+              // transform: [{translateX}],
+            }}>
             <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // backgroundColor: item.bg,
+                borderRadius: 10,
+                overflow: 'hidden',
+              }}>
+              <Image
+                source={theme.assets.dailyVerbsBanner}
+                resizeMode="contain"
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  // height:"100%"
+                }}
+              />
+            </View>
+            {/* <View
               style={{
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: item.bg,
                 borderRadius: 10,
-                padding: 20,
-                elevation: 5,
-              }}
-            >
-              <Text>{item.tabTitle} Content</Text>
-            </View>
+              
+              }}>
+                <Image
+                source={theme.assets.dailyVerbsBanner}
+                resizeMode='contain'
+                style={{
+                  height:"100%",
+                  width:"90%",
+                }}
+                />
+            </View> */}
           </Animated.View>
         )}
-        onMomentumScrollEnd={(event) => {
+        onMomentumScrollEnd={event => {
           const offsetX = event.nativeEvent.contentOffset.x;
           const newIndex = Math.round(offsetX / CARD_WIDTH);
-          console.log("New Index", newIndex)
+          console.log('New Index', newIndex);
           setActiveTab(newIndex);
         }}
       />
-      <TabBar tabs={languageArray} activeIndex={activeTab} onPress={handleTabPress} />
     </View>
   );
 };
 
-// const DailyVerbs = () => {
-//   let languageArray = [
-//     {
-//       key: '1',
-//       tabTitle: 'English',
-//       bg: 'red',
-//     },
-//     {
-//       key: '2',
-//       tabTitle: 'Marathi',
-//       bg: 'green',
-//     },
-//     {
-//       key: '3',
-//       tabTitle: 'Hindi',
-//       bg: 'yellow',
-//     },
-//     {
-//       key: '2',
-//       tabTitle: 'Marathi',
-//       bg: 'green',
-//     },
-//     {
-//       key: '3',
-//       tabTitle: 'Hindi',
-//       bg: 'yellow',
-//     },
-//     {
-//       key: '2',
-//       tabTitle: 'Marathi',
-//       bg: 'green',
-//     },
-//     {
-//       key: '3',
-//       tabTitle: 'Hindi',
-//       bg: 'yellow',
-//     },
-//   ];
-
-//   const scrollX = React.useRef(new Animated.Value(0)).current;
-
-// const SCREEN_WIDTH = Dimensions.get('window').width;
-// const CARD_WIDTH = SCREEN_WIDTH * 0.9; // Adjust as needed
-
-//   return (
-//     <>
-//       <View
-//         style={{
-//           marginTop: '5%',
-//         }}>
-
-// const SCREEN_WIDTH = Dimensions.get('window').width;
-// const CARD_WIDTH = SCREEN_WIDTH * 0.7; // Adjust as needed
-
-// const languageArray = [
-//   { key: 'hindi', tabTitle: 'Hindi', bg: 'blue' },
-//   { key: 'english', tabTitle: 'English', bg: 'green' },
-//   { key: 'marathi', tabTitle: 'Marathi', bg: 'red' },
-// ];
-
-// const TabBar = ({ tabs, activeIndex, onPress }) => {
-//   return (
-//     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-//       {tabs.map((tab, index) => (
-//         <TouchableOpacity
-//           key={tab.key}
-//           onPress={() => onPress(index)}
-//           style={{
-//             paddingVertical: 10,
-//             paddingHorizontal: 20,
-//             borderBottomWidth: activeIndex === index ? 2 : 0,
-//             borderBottomColor: 'red',
-//           }}
-//         >
-//           <Text>{tab.tabTitle}</Text>
-//         </TouchableOpacity>
-//       ))}
-//     </View>
-//   );
-// };
-
-// const HorizontalCardList = () => {
-//   const [activeTab, setActiveTab] = useState(0);
-//   const scrollX = useRef(new Animated.Value(0)).current;
-//   const flatListRef = useRef(null);
-
-//   const handleTabPress = (index) => {
-//     flatListRef.current.scrollToIndex({ index, animated: true });
-//     setActiveTab(index);
-//   };
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <TabBar tabs={languageArray} activeIndex={activeTab} onPress={handleTabPress} />
-//       <FlatList
-//         ref={flatListRef}
-//         data={languageArray}
-//         keyExtractor={(item) => item.key}
-//         horizontal
-//         pagingEnabled
-//         showsHorizontalScrollIndicator={false}
-//         contentContainerStyle={{
-//           flexGrow: 1,
-//           alignItems: 'center',
-//           padding: 0,
-//         }}
-//         onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-//           useNativeDriver: false,
-//         })}
-//         renderItem={({ item, index }) => (
-//           <Animated.View
-//             style={{
-//               width: CARD_WIDTH,
-//               marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
-//               transform: [
-//                 {
-//                   scale: scrollX.interpolate({
-//                     inputRange: [
-//                       (index - 1) * SCREEN_WIDTH,
-//                       index * SCREEN_WIDTH,
-//                       (index + 1) * SCREEN_WIDTH,
-//                     ],
-//                     outputRange: [0.8, 1, 0.8],
-//                   }),
-//                 },
-//               ],
-//             }}
-//           >
-//             <View
-//               style={{
-//                 flex: 1,
-//                 justifyContent: 'center',
-//                 alignItems: 'center',
-//                 backgroundColor: item.bg,
-//                 borderRadius: 10,
-//                 padding: 20,
-//                 elevation: 5,
-//               }}
-//             >
-//               <Text>{item.tabTitle} Content</Text>
-//             </View>
-//           </Animated.View>
-//         )}
-//       />
-//     </View>
-//   );
-// };
-
-
-//             {/* <FlatList
-//       data={languageArray}
-//       keyExtractor={(item) => item.key}
-//       horizontal
-//       pagingEnabled
-//       contentContainerStyle={{
-//         flexGrow: 1,
-//         alignItems: 'center',
-//         padding: 0,
-//       }}
-//       renderItem={({ item, index }) => (
-//         <View
-//           style={{
-//             width: CARD_WIDTH,
-//             marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
-//             height:getResHeight(210)
-//           }}
-//         >
-//           <View
-//             style={{
-//               flex: 1,
-//               justifyContent: 'center',
-//               alignItems: 'center',
-//               backgroundColor: item.bg,
-//               borderRadius: 10,
-//               padding: 20,
-//               elevation: 5, // Add shadow for depth
-//             }}
-//           >
-//             <Text>{item.tabTitle}</Text>
-//           </View>
-//         </View>
-//       )}
-//     /> */}
-      
-//       </View>
-//     </>
-//   );
-// };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  slide: {
+    width: itemWidth,
+    height: 200, // Adjust this according to your layout
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  paginationContainer: {
+    paddingVertical: 10,
+  },
+  paginationDot: {
+    width:8,
+    height:8,
+    borderRadius: 5,
+    backgroundColor: textColorHandler(),
+    // marginHorizontal: 3,
+    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
+  },
+});
 
 const mapStateToProps = state => ({
   isDarkMode: state.auth.isDarkMode,

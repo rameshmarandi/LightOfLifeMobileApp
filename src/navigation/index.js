@@ -14,7 +14,7 @@ export default function FliikNavigation(props) {
     <Drawer.Navigator
     initialRouteName={!isLogedIn ? "MainNavigation" : "AuthNavigation"}
     drawerContent={(props) => <DrawerItem {...props} />}
-  
+  swipeable={false}
      screenOptions={{
     drawerStyle: {
       backgroundColor: '#c6cbef',
