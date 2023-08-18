@@ -17,7 +17,8 @@ const DrawerMenu = {
 
  const HomeModule = {
     specialDay : "Momentous Occasion",
-   firstHeaderText : "Daily Verbs"
+   firstHeaderText : "Daily Verbs",
+   chruchLocation:"Church Location"
 } 
 
 export default message = {
