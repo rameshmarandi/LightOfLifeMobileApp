@@ -38,6 +38,7 @@ const color = {
   dimGray: '#828282',
   lableColor: '#666666',
   white: '#FFFFFF',
+  iceWhite:"#f9f9f9",
   dimWhite:"#f1f1f1",
   outlineColor: '#999999',
   placeholder: '#C0C0C0',

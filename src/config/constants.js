@@ -7,6 +7,11 @@ export const asyncKeys = {
   loginSession: '@IsLogdIn',
   token: '@Token',
 };
+
+export const MapCoordinate = {
+  latitude : 18.4494122,
+   longitude : 73.8405735
+}
 export let userID = uuid.v4()
 
 

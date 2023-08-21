@@ -32,7 +32,6 @@ import SectionHeader from '../../../components/SectionHeader';
 import MsgConfig from '../../../config/MsgConfig';
 import {TabView, SceneMap} from 'react-native-tab-view';
 
-import MapView, {Marker} from 'react-native-maps';
 import {
   SCREENWIDTH,
   getFontSize,
@@ -42,16 +41,30 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 import {Button} from 'react-native-elements';
 import {VectorIcon} from '../../../components/VectorIcon';
+import GoogleMapComp from '../../../components/GoogleMapComp';
+import GoogleMapWrapper from '../../../components/GoogleMapComp';
+import QuickRouteComp from '../../../components/QuickRouteComp';
 
 const {width} = Dimensions.get('window');
 const itemWidth = width - 40; // Adjust this according to your layout
 
 const images = [
-  'https://static.officeholidays.com/images/1280x853c/india-flag-01.jpg',
-  'https://www.thestatesman.com/wp-content/uploads/2020/08/i-2.jpg',
+  'https://i.pinimg.com/originals/34/18/a4/3418a4a2c4d02d5890a8b3bde35d8e3c.jpg',
+  'https://dailyverses.net/images/en/kjv/xl/matthew-1-21-2.jpg',
   'https://nenow.in/wp-content/uploads/2022/08/Independence-Day-2022.png',
 
   'https://im.indiatimes.in/content/2023/Aug/Independence-Day-speech4_64ca45b727e08.jpg',
+];
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const CARD_WIDTH = SCREEN_WIDTH * 0.9;
+//  * 0.9
+//  * 0.8; // Adjust as needed
+
+const languageArray = [
+  {key: 'hindi', tabTitle: 'Hindi', bg: 'blue'},
+  {key: 'english', tabTitle: 'English', bg: 'green'},
+  {key: 'marathi', tabTitle: 'Marathi', bg: 'red'},
 ];
 
 class HomePage extends Component {
@@ -188,9 +201,9 @@ class HomePage extends Component {
                         </View>
                       </View>
                     </>
-                  );
+                  )
 
-                case 1:
+                case 5:
                   return (
                     <>
                       <View
@@ -204,7 +217,44 @@ class HomePage extends Component {
                       <DailyVerbs />
                     </>
                   );
-                case 2:
+              
+                case 1:
+                  return (
+                    <>
+                      <View
+                        style={{
+                          paddingHorizontal: '5%',
+                          marginTop: '5%',
+                          marginBottom: '4%',
+                          borderRadius: 10,
+                        }}>
+                        <SectionHeader
+                          sectionTitle={`${MsgConfig.quickNav}`}
+                        />
+                        <QuickRouteComp/>
+                      </View>
+                  
+                    </>
+                  );
+                case 3:
+                  return (
+                    <>
+                      <View
+                        style={{
+                          paddingHorizontal: '5%',
+                          marginTop: '5%',
+                          marginBottom: '4%',
+                          borderRadius: 10,
+                        }}>
+                        <SectionHeader
+                          sectionTitle={`${MsgConfig.socialMedia}`}
+                        />
+                        
+                      </View>
+                  
+                    </>
+                  );
+                    case 4:
                   return (
                     <>
                       <View
@@ -219,14 +269,17 @@ class HomePage extends Component {
                         />
                         <View
                           style={{
+                            marginBottom:"70%",
                             width: '100%',
-                            height: getResHeight(450),
+                            height: getResHeight(250),
                             borderRadius: 10,
                             overflow: 'hidden',
                             marginTop: '4%',
                           }}>
-                          <MapScreen />
+                          <GoogleMapComp />
+                        
                         </View>
+                        
                       </View>
                   
                     </>
@@ -241,56 +294,8 @@ class HomePage extends Component {
   }
 }
 
-const MapScreen = () => {
-  return (
-    // <View style={{ flex: 1 }}>
-    <MapView
-      style={{width: '100%', height: 300}}
-      initialRegion={{
-        latitude: 18.5890345,
-        longitude: 73.7925924,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }}>
-      <Marker
-        coordinate={{latitude: 18.5890345, longitude: 73.7925924}}
-        title="Light of Life Church"
-        description="Join us for worship, fellowship, and spiritual growth at Light of Life Church. All are welcome!"
-        icon={
-        ()=>{
-          return (  <VectorIcon
-            type={'FontAwesome6'}
-            name={'location-dot'}
-            size={getFontSize(29)}
-            color={'red'}
-            style={{}}
-          />)
-        }
-        }>
-          <VectorIcon
-            type={'FontAwesome6'}
-            name={'location-dot'}
-            size={getFontSize(29)}
-            color={'red'}
-            style={{}}
-          />
-        <Text>Custom Marker Text</Text>
-      </Marker>
-    </MapView>
-    // </View>
-  );
-};
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
-const CARD_WIDTH = SCREEN_WIDTH * 0.9;
-//  * 0.9
-//  * 0.8; // Adjust as needed
 
-const languageArray = [
-  {key: 'hindi', tabTitle: 'Hindi', bg: 'blue'},
-  {key: 'english', tabTitle: 'English', bg: 'green'},
-  {key: 'marathi', tabTitle: 'Marathi', bg: 'red'},
-];
 
 const TabBar = ({tabs, activeIndex, onPress}) => {
   return (
@@ -308,8 +313,7 @@ const TabBar = ({tabs, activeIndex, onPress}) => {
             // LayoutAnimation.easeIneaseOut()
             onPress(index);
           }}
-          titleStyle={{
-            // activeIndex === index ? "red" :
+          titleStyle={{    
             color: activeIndex === index ? 'red' : textColorHandler(),
             fontFamily: theme.font.semiBold,
             fontSize: getFontSize(11),
@@ -474,8 +478,7 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 5,
     backgroundColor: textColorHandler(),
-    // marginHorizontal: 3,
-    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
+  
   },
 });
 
