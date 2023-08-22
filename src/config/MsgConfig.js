@@ -1,9 +1,9 @@
 
 const DrawerMenu = {
   home:"Home",
-  freeResource:"Free Resource",
+  freeResource:"Free Resources",
   prayerRequest:"Prayer Request",
-  event:"Event",
+  event:"Events",
   contactWithUs:"Contact With Us",
   feedBack:
   // 'ମତାମତ',

@@ -32,6 +32,7 @@ const color = {
     '#2F3B75', // ok //F99D27
   darkTheme:"#000f0b",
   secondary: '#E66EA7',
+  iconCircleBg: '#343434',
   seletedBtn: '#303254',
   disabledBtn: 'rgba(48,50,84,0.8)',
   dimBlack: '#353535',

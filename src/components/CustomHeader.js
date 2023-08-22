@@ -36,7 +36,7 @@ import {
 import {getYears, removeSpace} from '../components/commonFunction';
 
 const CustomHeader = props => {
-  const {Hamburger, centerLogo} = props;
+  const {Hamburger, backPress , screenTitle,centerLogo} = props;
   return (
     <>
       <SafeAreaView
@@ -51,7 +51,7 @@ const CustomHeader = props => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottomWidth:0.5,
+            borderBottomWidth:Hamburger ? 0.5 : 0,
             borderBottomColor:  textColorHandler()
           }}>
           {Hamburger && (
@@ -90,6 +90,55 @@ const CustomHeader = props => {
                 },
               ]}
             />
+          )}
+          {backPress && (
+            <View style={{
+              flexDirection:"row",
+              alignItems:"center"
+            }}>
+            <Button
+              type={'clear'}
+              onPress={backPress}
+              iconPosition="right"            
+              icon={
+                <VectorIcon
+                  type={'Ionicons'}
+                  name={'chevron-back'}
+                  size={getFontSize(29)}
+                  color={ textColorHandler()}
+                  style={{
+                    marginTop:"-5.5%",
+                    marginLeft:"-2%"
+                  }}
+                />
+              }
+              iconContainerStyle={{
+              }}
+              containerStyle={[
+                {
+                  width: 47,
+                  height:  45,
+                  justifyContent:"center",
+                  backgroundColor: backgroundColorHandler(),
+                  borderRadius: 100,
+                },
+              ]}
+              buttonStyle={[
+                {
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 100,
+                },
+              ]}
+            />
+
+            <Text style={{
+              fontSize: getFontSize(13),
+              fontFamily: theme.font.medium,
+              color:textColorHandler(),
+              marginTop:"5%"
+            }}>{screenTitle}</Text>
+            </View>
           )}
 
           {centerLogo && typeof centerLogo == 'boolean' && (

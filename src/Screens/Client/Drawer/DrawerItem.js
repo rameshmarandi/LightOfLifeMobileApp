@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, SafeAreaView, Image, StyleSheet} from 'react-native';
+import {
+  Text,
+  View,
+  Switch,
+  SafeAreaView,
+  Image,
+  StyleSheet,
+} from 'react-native';
 import {Button} from 'react-native-elements';
 import {FlatList} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
@@ -16,16 +23,21 @@ import {
 import {VectorIcon} from '../../../components/VectorIcon';
 import {
   backgroundColorHandler,
+  getAsyncValue,
+  setAsyncValue,
   textColorHandler,
 } from '../../../components/commonHelper';
 import MsgConfig from '../../../config/MsgConfig';
+import {store} from '../../../utility/store';
+import {isDarkMode} from '../../../features/auth';
 
 class DrawerItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      darkMode: false,
+    };
   }
-
   _renderItem = ({item, index}) => {
     let {navigation} = this.props;
     return (
@@ -37,7 +49,8 @@ class DrawerItem extends Component {
           <Button
             title={item.lable}
             onPress={() => {
-              // navigation.closeDrawer();
+              navigation.navigate(item.route);
+              navigation.closeDrawer();
             }}
             disabledStyle={{
               backgroundColor: theme.color.disabledBtn,
@@ -74,10 +87,18 @@ class DrawerItem extends Component {
       </>
     );
   };
-
+  handleDarkMode = async () => {
+    const res = await getAsyncValue('darkMode');
+    if (typeof res == 'string' && res == 'false') {
+      await setAsyncValue('darkMode', true);
+      store.dispatch(isDarkMode(true));
+    } else {
+      await setAsyncValue('darkMode', false);
+      store.dispatch(isDarkMode(false));
+    }
+    this.props.navigation.closeDrawer();
+  };
   render() {
-    let {navigation} = this.props;
-
     let navRoute = [
       {
         id: 1,
@@ -96,7 +117,7 @@ class DrawerItem extends Component {
       {
         id: 2,
         lable: MsgConfig.freeResource,
-        route: 'HomePage',
+        route: 'FreeResource',
         icon: (
           <VectorIcon
             type={'FontAwesome5'}
@@ -174,6 +195,7 @@ class DrawerItem extends Component {
         ),
       },
     ];
+    const {isDarkMode, navigation} = this.props;
     return (
       <SafeAreaView
         style={[
@@ -215,6 +237,34 @@ class DrawerItem extends Component {
             renderItem={this._renderItem}
             keyExtractor={item => item.id?.toString()}
           />
+
+          <View
+            style={{
+              marginTop: '15%',
+              paddingHorizontal: '5%',
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                paddingHorizontal: '5%',
+              }}>
+              <Text
+                style={{
+                  fontFamily: theme.font.semiBold,
+                  color: textColorHandler(),
+                  marginRight: '4%',
+                }}>
+                Dark Mode
+              </Text>
+              <Switch
+                trackColor={{false: '#F9EDEA', true: theme.color.primary}}
+                thumbColor={theme.color.primary}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={this.handleDarkMode}
+                value={isDarkMode}
+              />
+            </View>
+          </View>
         </View>
         <View
           style={{
@@ -301,8 +351,13 @@ const styles = StyleSheet.create({
     height: getResHeight(45),
   },
 });
-const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {};
+const mapStateToProps = state => ({
+  isDarkMode: state.auth.isDarkMode,
+});
+
+const mapDispatchToProps = {
+  GetProductAPI: payload => dispatch(GetProductAPI(payload)),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawerItem);

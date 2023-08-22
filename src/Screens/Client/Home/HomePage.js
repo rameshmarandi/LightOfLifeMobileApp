@@ -2,6 +2,7 @@ import React, {Component, useState, useRef} from 'react';
 import {
   Text,
   View,
+  Platform,
   SafeAreaView,
   TouchableOpacity,
   Dimensions,
@@ -16,6 +17,7 @@ import {
 import theme from '../../../utility/theme';
 import {
   backgroundColorHandler,
+  extractVideoId,
   getAsyncValue,
   setAsyncValue,
   textColorHandler,
@@ -24,12 +26,14 @@ import messaging from '@react-native-firebase/messaging';
 import {connect} from 'react-redux';
 import {store} from '../../../utility/store';
 import {isDarkMode} from '../../../features/auth';
-import {backgroundColor} from '../../../config/constants';
+import {backgroundColor, youtubeLink} from '../../../config/constants';
 import * as PN from '../../../components/pushNotificaiton';
 import {sendOTPViaEmail} from '../../../apis/authRepo';
 import CustomHeader from '../../../components/CustomHeader';
 import SectionHeader from '../../../components/SectionHeader';
 import MsgConfig from '../../../config/MsgConfig';
+import YoutubePlayer from 'react-native-youtube-iframe';
+import * as Animatable from 'react-native-animatable';
 import {TabView, SceneMap} from 'react-native-tab-view';
 
 import {
@@ -42,7 +46,6 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Button} from 'react-native-elements';
 import {VectorIcon} from '../../../components/VectorIcon';
 import GoogleMapComp from '../../../components/GoogleMapComp';
-import GoogleMapWrapper from '../../../components/GoogleMapComp';
 import QuickRouteComp from '../../../components/QuickRouteComp';
 
 const {width} = Dimensions.get('window');
@@ -71,7 +74,6 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      darkMode: false,
       activeSlide: 0,
     };
   }
@@ -87,16 +89,7 @@ class HomePage extends Component {
     // await PN.getAsyncFCMToken()
     // const PNToken = await PN.getAsyncFCMToken();
   }
-  handleDarkMode = async () => {
-    const res = await getAsyncValue('darkMode');
-    if (typeof res == 'string' && res == 'false') {
-      await setAsyncValue('darkMode', true);
-      store.dispatch(isDarkMode(true));
-    } else {
-      await setAsyncValue('darkMode', false);
-      store.dispatch(isDarkMode(false));
-    }
-  };
+  
   _renderItem = ({item}) => {
     return (
       <View
@@ -127,33 +120,7 @@ class HomePage extends Component {
             }}
             centerLogo={true}
           />
-                <View
-          style={{
-            marginTop: '15%',
-            paddingHorizontal: '5%',
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingHorizontal: '5%',
-            }}>
-            <Text
-              style={{
-                fontFamily: theme.font.semiBold,
-                color: textColorHandler(),
-                marginRight: '4%',
-              }}>
-              Dark Mode
-            </Text>
-            <Switch
-              trackColor={{false: '#F9EDEA', true: theme.color.primary}}
-              thumbColor={theme.color.primary}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={this.handleDarkMode}
-              value={isDarkMode}
-            />
-          </View>
-        </View>
+      
         </View>
         <View style={{}}>
           <FlatList
@@ -163,7 +130,10 @@ class HomePage extends Component {
                 case 0:
                   return (
                     <>
-                      <View
+                      <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        delay={200}
                         style={{
                           paddingHorizontal: '7%',
                           marginTop: '5%',
@@ -199,47 +169,59 @@ class HomePage extends Component {
                             inactiveDotScale={0.6}
                           />
                         </View>
-                      </View>
+                      </Animatable.View>
                     </>
-                  )
+                  );
 
-                case 5:
+                case 1:
                   return (
                     <>
-                      <View
+                      <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        delay={200}
                         style={{
                           paddingHorizontal: '7%',
                         }}>
                         <SectionHeader
                           sectionTitle={`${MsgConfig.firstHeaderText}`}
                         />
-                      </View>
+                      </Animatable.View>
                       <DailyVerbs />
                     </>
                   );
-              
-                case 1:
+
+                case 2:
                   return (
                     <>
-                      <View
+                      <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        delay={200}
                         style={{
                           paddingHorizontal: '5%',
                           marginTop: '5%',
                           marginBottom: '4%',
                           borderRadius: 10,
                         }}>
-                        <SectionHeader
-                          sectionTitle={`${MsgConfig.quickNav}`}
-                        />
-                        <QuickRouteComp/>
-                      </View>
-                  
+                          <View style={{
+                        marginTop:"2%",
+                        marginBottom:"2%"
+                      }}>
+                        <SectionHeader sectionTitle={`${MsgConfig.quickNav}`} />
+                      
+                        </View>
+                        <QuickRouteComp {...this.props} />
+                      </Animatable.View>
                     </>
                   );
                 case 3:
                   return (
                     <>
-                      <View
+                      <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        delay={200}
                         style={{
                           paddingHorizontal: '5%',
                           marginTop: '5%',
@@ -249,54 +231,75 @@ class HomePage extends Component {
                         <SectionHeader
                           sectionTitle={`${MsgConfig.socialMedia}`}
                         />
-                        
-                      </View>
-                  
+                        <YoutubeComp />
+                      </Animatable.View>
                     </>
                   );
-                    case 4:
+                case 4:
                   return (
                     <>
-                      <View
+                      <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        delay={200}
                         style={{
                           paddingHorizontal: '5%',
                           marginTop: '5%',
                           marginBottom: '4%',
                           borderRadius: 10,
                         }}>
+                        
                         <SectionHeader
                           sectionTitle={`${MsgConfig.chruchLocation}`}
                         />
                         <View
                           style={{
-                            marginBottom:"70%",
+                            marginBottom: '70%',
                             width: '100%',
                             height: getResHeight(250),
                             borderRadius: 10,
                             overflow: 'hidden',
-                            marginTop: '4%',
+                            marginTop: '6%',
                           }}>
                           <GoogleMapComp />
-                        
                         </View>
-                        
-                      </View>
-                  
+                      </Animatable.View>
                     </>
                   );
               }
             }}
           />
         </View>
-      
       </SafeAreaView>
     );
   }
 }
-
-
-
-
+const YoutubeComp = () => {
+  return (
+    <>
+      <YoutubePlayer
+        width={'100%'}
+        height={getResHeight(200)}
+        videoId={extractVideoId(youtubeLink)}
+        webViewProps={{
+          scrollEnabled: false,
+          renderToHardwareTextureAndroid: true,
+          androidLayerType:
+            Platform.OS === 'android' && Platform.Version <= 22
+              ? 'hardware'
+              : 'none',
+        }}
+        webViewStyle={{
+          width: '100%',
+          height: '100%',
+          borderRadius: 100,
+          marginTop: '5%',
+          opacity: 0.99,
+        }}
+      />
+    </>
+  );
+};
 const TabBar = ({tabs, activeIndex, onPress}) => {
   return (
     <View style={{flexDirection: 'row', paddingLeft: '5%', marginTop: '2.5%'}}>
@@ -313,7 +316,7 @@ const TabBar = ({tabs, activeIndex, onPress}) => {
             // LayoutAnimation.easeIneaseOut()
             onPress(index);
           }}
-          titleStyle={{    
+          titleStyle={{
             color: activeIndex === index ? 'red' : textColorHandler(),
             fontFamily: theme.font.semiBold,
             fontSize: getFontSize(11),
@@ -370,7 +373,11 @@ const DailyVerbs = () => {
   });
 
   return (
-    <View style={{flex: 1}}>
+    <Animatable.View
+      style={{flex: 1}}
+      animation="fadeInUp"
+      duration={500}
+      delay={200}>
       <TabBar
         tabs={languageArray}
         activeIndex={activeTab}
@@ -449,7 +456,7 @@ const DailyVerbs = () => {
           setActiveTab(newIndex);
         }}
       />
-    </View>
+    </Animatable.View>
   );
 };
 
@@ -478,7 +485,6 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 5,
     backgroundColor: textColorHandler(),
-  
   },
 });
 

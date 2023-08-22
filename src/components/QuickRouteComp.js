@@ -1,49 +1,30 @@
 import React, {useCallback} from 'react';
 import {
   View,
-  Linking,
   FlatList,
   Text,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
 } from 'react-native';
 import {Button} from 'react-native-elements';
-import MapView, {Marker, Callout} from 'react-native-maps';
 import {getFontSize} from '../utility/responsive';
 import {VectorIcon} from './VectorIcon';
 import theme from '../utility/theme';
-import {MapCoordinate} from '../config/constants';
 import MsgConfig from '../config/MsgConfig';
-import {backgroundColorHandler, textColorHandler} from './commonHelper';
 import {store} from '../utility/store';
+import { textColorHandler } from './commonHelper';
 
-const QuickRouteComp = () => {
+const QuickRouteComp = (props) => {
   let darkModeStatus = store.getState().auth.isDarkMode;
   let navRoute = [
     {
-      id: 1,
-      lable: MsgConfig.home,
-      route: 'HomePage',
-      icon: (
-        <VectorIcon
-          type={'Entypo'}
-          name={'home'}
-          size={getFontSize(23)}
-          color={theme.color.primary}
-        />
-      ),
-    },
-
-    {
       id: 2,
       lable: MsgConfig.freeResource,
-      route: 'HomePage',
+      route: 'FreeResource',
       icon: (
         <VectorIcon
           type={'FontAwesome5'}
           name={'compress-arrows-alt'}
-          size={getFontSize(21)}
-          color={theme.color.primary}
+          size={getFontSize(18)}
+          color={textColorHandler()}
         />
       ),
     },
@@ -56,8 +37,8 @@ const QuickRouteComp = () => {
         <VectorIcon
           type={'FontAwesome5'}
           name={'pray'}
-          size={getFontSize(25)}
-          color={theme.color.primary}
+          size={getFontSize(21)}
+          color={textColorHandler()}
         />
       ),
     },
@@ -69,8 +50,8 @@ const QuickRouteComp = () => {
         <VectorIcon
           type={'MaterialIcons'}
           name={'event-note'}
-          size={getFontSize(25)}
-          color={theme.color.primary}
+          size={getFontSize(21)}
+          color={textColorHandler()}
         />
       ),
     },
@@ -83,8 +64,8 @@ const QuickRouteComp = () => {
         <VectorIcon
           type={'MaterialIcons'}
           name={'contact-mail'}
-          size={getFontSize(25)}
-          color={theme.color.primary}
+          size={getFontSize(21)}
+          color={textColorHandler()}
         />
       ),
     },
@@ -96,8 +77,8 @@ const QuickRouteComp = () => {
         <VectorIcon
           type={'MaterialIcons'}
           name={'feedback'}
-          size={getFontSize(25)}
-          color={theme.color.primary}
+          size={getFontSize(21)}
+          color={textColorHandler()}
         />
       ),
     },
@@ -109,35 +90,39 @@ const QuickRouteComp = () => {
         <VectorIcon
           type={'Ionicons'}
           name={'settings'}
-          size={getFontSize(25)}
-          color={theme.color.primary}
+          size={getFontSize(21)}
+          color={textColorHandler()}
         />
       ),
     },
   ];
-  const NavRouteItem = ({icon, lable}) => {
+  const NavRouteItem = (props) => {
+
+    let {icon, lable, navigation,navRoute} = props
     let darkModeStatus = store.getState().auth.isDarkMode;
     return (
       <View
-        style={
-          {
-            //   flexDirection: 'row',
-            //   justifyContent: 'space-between',
-            //   alignItems: 'center',
-            //   paddingVertical: 10,
-            //   paddingHorizontal: 20,
-            //   borderBottomWidth: 1,
-            //   borderColor: 'gray', // Adjust the color as needed
-          }
-        }>
+        style={{
+          margin: 10,
+          alignSelf:"center"
+        }}>
         <Button
           type={'clear'}
-          onPress={() => {}}
+          onPress={() => {
+          navigation.navigate(navRoute.route)
+          }}
           iconPosition="right"
           icon={
             <View style={{alignItems: 'center'}}>
               {icon}
-              <Text style={{marginTop: 4, fontSize: 12, color: 'black'}}>
+              <Text
+                style={{
+                  marginTop: 4,
+                  textAlign: 'center',
+                  fontSize: getFontSize(10),
+                  color : textColorHandler(),
+                  fontFamily: theme.font.medium
+                }}>
                 {lable}
               </Text>
             </View>
@@ -147,11 +132,12 @@ const QuickRouteComp = () => {
           }}
           containerStyle={[
             {
-              width: 100,
-              height: 100,
+              width: 90,
+              height: 90,
               justifyContent: 'center',
-              backgroundColor: darkModeStatus ? 'white' : theme.color.iceWhite,
-              //   backgroundColorHandler(),
+              textAlign: 'center',
+              backgroundColor: darkModeStatus ?theme.color.iconCircleBg : theme.color.iceWhite,
+            
               borderRadius: 100,
             },
           ]}
@@ -168,7 +154,7 @@ const QuickRouteComp = () => {
   };
 
   const renderNavRouteItem = ({item}) => (
-    <NavRouteItem icon={item.icon} lable={item.lable} />
+    <NavRouteItem icon={item.icon} lable={item.lable} navRoute = {item} {...props}/>
   );
 
   return (
@@ -177,73 +163,14 @@ const QuickRouteComp = () => {
         data={navRoute}
         renderItem={renderNavRouteItem}
         keyExtractor={item => item.id.toString()}
-        containerStyle={
-            {
-
-            }}
-        // contentContainerStyle={{
-        //     width:"100%",
-
-        //     flexDirection:"row"
-        // }}
-      />
-
-      {/* <View>
-        <Text>Icons</Text>
-        <Text>Route name</Text>
-          <Button
-  type={'clear'}
-  onPress={() => {}}
-  iconPosition="right"
-  icon={
-    <View style={{ alignItems: 'center' }}>
-      <VectorIcon
-        type={'Ionicons'}
-        name={'menu'}
-        size={getFontSize(29)}
-        color={textColorHandler()}
-        style={{
-          marginTop: 0,
+        numColumns={3}
+        containerStyle={{
+          width:"100%",
+          alignSelf:"center"
         }}
       />
-      <Text style={{ marginTop: 4, fontSize: 12, color: textColorHandler() }}>
-        Icon Text
-      </Text>
-    </View>
-  }
-  iconContainerStyle={{
-    alignItems: 'center',
-  }}
-  containerStyle={[
-    {
-      width: 100,
-      height: 100,
-      justifyContent: 'center',
-      backgroundColor: backgroundColorHandler(),
-      borderRadius: 100,
-    },
-  ]}
-  buttonStyle={[
-    {
-      width: '100%',
-      height: '100%',
-      borderRadius: 100,
-    },
-  ]}
-/>
-
-    </View> */}
     </>
   );
 };
-// Wrap the component with React.memo and useCallback to prevent re-renders
-// const QuickRouteWrapper = React.memo(RouteNaveCirleComp);
-
-// const QuickRouteComp = () => {
-//   // Wrapping the component with useCallback to prevent unnecessary re-creation
-//   const memoizedCallback = useCallback(() => <QuickRouteWrapper />, [store.getState().auth.isDarkMode]);
-
-//   return memoizedCallback();
-// };
 
 export default QuickRouteComp;

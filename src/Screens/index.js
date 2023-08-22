@@ -7,6 +7,9 @@ export {default as ChangePassword} from './Admin/Auth/ChangePassword';
 // ============= HomeModule  ==================
 export {default as HomePage} from './Client/Home/HomePage';
 export {default as DrawerItem} from './Client/Drawer/DrawerItem';
+export {default as FreeResource} from './Client/FreeResource';
+
+
 export {default as MyProfile} from './Admin/Profile/MyProfile';
 export {default as Setting} from './Admin/Setting/Setting';
 export {default as AddProduct} from './Admin/Products/AddProduct';

@@ -277,6 +277,13 @@ export const fileSelector = async (filetype, isbase64) => {
   }
 };
 
+export const extractVideoId = youtubeUrl => {
+  const match = youtubeUrl.match(/v=([^&]+)/);
+  if (match) {
+    return match[1];
+  }
+  return null; // Return null if no match found
+};
 
 export const backgroundColorHandler = ()=>{
   if(store.getState().auth.isDarkMode){
@@ -302,7 +309,16 @@ export const textColorHandler = ()=>{
     //  'black'
   }
 }
-          
+// export const iconColorHandler = ()=>{
+//   if(store.getState().auth.isDarkMode){
+//     return 'white'
+//   }else{
+//     return theme.color.primary
+//     //  'black'
+//   }
+// }
+  
+
 export const setAsyncValue = async (key, value) => {
   let setVal = value;
   try {
