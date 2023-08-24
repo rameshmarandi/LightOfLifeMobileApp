@@ -5,6 +5,21 @@ import cross from '../../assets/cross.png';
 import church_logo from '../../assets/church_logo.png';
 import church_logo_origianl from '../../assets/church_logo_origianl.png';
 import dailyVerbsBanner from '../../assets/dailyVerbsBanner.jpg';
+//Resources images
+import missionary from '../../assets/resources/missionary.jpg';
+import theology from '../../assets/resources/theology.png';
+import gotquestion from '../../assets/resources/gotquestion.png';
+import unity from '../../assets/resources/unity.png';
+import ebook from '../../assets/resources/ebook.png';
+
+const resourcesImages = {
+missionary,
+theology,
+gotquestion,
+unity,
+ebook
+
+};
 
 const authIcons = {
   FliickLogo,
@@ -19,6 +34,6 @@ church_logo_origianl,
 };
 export default assets = {
   ...authIcons,
-  ...homeIcons
-  
+  ...homeIcons,
+  ...resourcesImages
 };

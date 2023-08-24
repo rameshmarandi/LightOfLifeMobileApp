@@ -5,30 +5,51 @@ import {
   Platform,
   Share,
   View,
+  SafeAreaView,
+  Modal,
+  StyleSheet,
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-// import * as ImagePicker from 'react-native-image-crop-picker';
 import * as rnfs from 'react-native-fs';
 import {atob} from 'abab';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import theme from '../utility/theme';
-import {StyleSheet, Modal} from 'react-native';
 import {Button, Image} from 'react-native-elements';
 import {
   getFontSize,
   getResHeight,
+  SCREENWIDTH,
+  SCREENHEIGHT,
   getResWidth,
   hp,
   wp,
 } from '../utility/responsive';
-import {asyncKeys, BASEURL} from '../config/constants';
-import {store} from '../utility/store';
-import {Text, IconButton, Colors, TextInput} from 'react-native-paper';
-
 import {VectorIcon} from './VectorIcon';
 
+export const CommonModal = props => {
+  const {onClick, isVisible, renderUi, loading} = props;
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+        }}>
+        <Modal visible={isVisible} animationType="slide" transparent={true}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              onPress={onClick}
+              style={styles.clickClose}></TouchableOpacity>
+
+            {renderUi()}
+          </View>
+        </Modal>
+      </View>
+    </SafeAreaView>
+  );
+};
 export const CommonButton = props => {
   const {
     onPress,
@@ -88,224 +109,77 @@ export const CommonButton = props => {
     />
   );
 };
-export const CommonAlertModal = props => {
+export const CommonButtonComp = props => {
   const {
-    onClick,
-    navigateToBooking,
-    message,
-    nobtn,
-    firstName,
-    lastName,
-    SaveBtnPressed,
-    typeOfModal,
-    isVisible,
-    sessionModal,
-    data,
-    loading,
-    center,
-    alertTitle,
-    addBookMark,
-    removeBookMark,
+    onPress,
+    title,
+    icon,
+    rightIcon,
+    leftIcon,
+    isLoading,
+    buttonStyle,
+    backgroundColor,
+    titleStyle,
+    disabled,
+    containerStyle,
   } = props;
-
-  // const [modalVisisle , setModalVisislbe] = React.useState(false)
-  console.log(alertTitle);
-  const conditionCheck = () => {
-    if (
-      sessionModal == true ||
-      addBookMark == true ||
-      removeBookMark == true ||
-      nobtn
-    ) {
-      return true;
-    }
-  };
-  if (sessionModal == true) {
-    setTimeout(async () => {
-      store.dispatch({type: 'RESSET_STORE'});
-      await setUserSession(false);
-      props.navigation.navigate('Login');
-      await GoogleSignin.signOut();
-    }, 800);
-  }
-
   return (
-    <Modal
-      visible={isVisible}
-      // visible = {true}
-      // isVisible={isVisible}
-      onRequestClose={props.onRequestClose}
-      // onSwipeComplete={props.onRequestClose}
-      animationType={'fade'}
-      // swipeDirection="up"
-      // animationIn={'SlideInUP'}
-      // coverScreen={true}
-      // backdropTransitionInTiming={1000}
-      // backdropTransitionOutTiming={2000}
-      transparent={true}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: 'rgba(0,0,0,0.3)',
-        }}>
-        <View
-          style={{
-            width: '90%',
-            alignSelf: 'center',
-            backgroundColor: 'white',
-            //backgroundColor: 'white',
-            padding: 20,
-            borderRadius: 10,
-          }}>
-          <View
-            style={{
-              justifyContent: conditionCheck() ? 'center' : 'flex-start',
-              alignItems: conditionCheck() ? 'center' : 'flex-start',
-            }}>
-            {conditionCheck() ? (
-              <>
-                <VectorIcon
-                  type={'Ionicons'}
-                  name={
-                    sessionModal == true
-                      ? 'close-circle-sharp'
-                      : addBookMark == true
-                      ? 'checkmark-circle-sharp'
-                      : 'checkmark-circle-sharp'
-                  }
-                  size={getFontSize(50)}
-                  color={
-                    addBookMark == true || removeBookMark == true || nobtn
-                      ? theme.color.primary
-                      : theme.color.orange
-                  }
-                />
-              </>
-            ) : (
-              <>
-                <Text
-                  style={{
-                    fontSize: getFontSize(17),
-                    fontFamily: theme.font.semiBold,
-                    color: theme.color.primary,
-                  }}>
-                  Alert
-                </Text>
-              </>
-            )}
+  
+      <Button
+        title={title}
+        onPress={onPress}
+        icon={
+          icon
+        }
+        titleStyle={[
+          styles.btnTitleStyle,
+          {
+            color: 'white',
+          },
+        ]}      
+        containerStyle={[
+          styles.btnContainerStyle,
+          {
+            elevation: 6,
+            borderRadius: 100,
+          },
+        ]}
+        buttonStyle={[
+          {
+            width: '100%',
+            height: '100%',
+            borderRadius: 100,
+            backgroundColor: theme.color.primary,
+          },
+        ]}
+        {...props}
+      />
 
-            <Text
-              style={{
-                fontSize: getFontSize(12),
-                fontFamily: conditionCheck()
-                  ? theme.font.semiBold
-                  : theme.font.regular,
-                marginTop: '3%',
-                color: 'black',
-                textAlign: conditionCheck() ? 'center' : 'left',
-              }}>
-              {message
-                ? message
-                : sessionModal
-                ? `Your Session has beesn expired!`
-                : addBookMark == true
-                ? 'Property has been shortlisted'
-                : removeBookMark == true
-                ? 'Property has been removed from shortlisted'
-                : alertTitle}
-            </Text>
-            {conditionCheck() ? null : (
-              <>
-                <View
-                  style={{
-                    width: '100%',
-                    marginTop: '10%',
-                  }}>
-                  <CommonButton title={'OK'} onPress={onClick} />
-                </View>
-              </>
-            )}
-          </View>
-        </View>
-      </View>
-    </Modal>
   );
 };
-
-export const EmptyDataComponet = props => {
-  const {title, desc} = props;
-  return (
-    <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingHorizontal: '2%',
-          paddingVertical: '2%',
-          alignItems: 'center',
-        }}>
-        <Text
-          style={{
-            top: '15%',
-            fontFamily: theme.font.medium,
-            color: theme.color.primary,
-            fontSize: getFontSize(14),
-          }}>
-          {title}
-        </Text>
-
-        {desc !== undefined && (
-          <>
-            <Text
-              style={{
-                top: '15%',
-                fontFamily: theme.font.medium,
-                color: theme.color.black,
-                fontSize: getFontSize(12),
-              }}>
-              {desc}
-            </Text>
-          </>
-        )}
-      </View>
-    </>
-  );
-};
-
 const styles = StyleSheet.create({
+  // Common Modal
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
   },
-  card: {
-    width: '99%',
-    marginBottom: '4%',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    shadowRadius: 1,
-    borderColor: '#D1D1D1',
-    backgroundColor: '#FFFFFF',
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 1},
-    shadowRadius: 5,
-    shadowOpacity: 0.1,
-    elevation: 2,
-    margin:5,
-    borderRadius: 10,
+  clickClose: {
+    width: SCREENWIDTH,
+    height: SCREENHEIGHT,
+    position: 'absolute',
   },
-  TemStyle: {
-    borderColor: '#D1D1D1',
-    borderWidth: 1,
-    borderRadius: 20,
-    height: '100%',
+  // Prayer modal button style
+  btnTitleStyle: {
+    textAlign: 'left',
+    fontSize: getFontSize(12),
+    fontFamily: theme.font.semiBold,
+    marginLeft: '5%',
+    marginTop: '2%',
+  },
+  btnContainerStyle: {
+    marginBottom: '1.5%',
     width: '100%',
-  },
-  logoStyle: {
-    height: '50%',
-    width: '40%',
+    height: getResHeight(45),
   },
 });

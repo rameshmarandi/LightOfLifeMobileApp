@@ -48,8 +48,6 @@ const OTPInputBox = (props) => {
         {
           width: '90%',
           flexDirection: 'row',
-          //justifyContent: 'space-evenly',
-          //marginVertical: '5%',
           alignSelf: 'center',
         },
         style,

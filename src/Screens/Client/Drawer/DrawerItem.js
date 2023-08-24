@@ -30,6 +30,7 @@ import {
 import MsgConfig from '../../../config/MsgConfig';
 import {store} from '../../../utility/store';
 import {isDarkMode} from '../../../features/auth';
+import { CommonButtonComp } from '../../../components/commonComp';
 
 class DrawerItem extends Component {
   constructor(props) {
@@ -266,58 +267,33 @@ class DrawerItem extends Component {
             </View>
           </View>
         </View>
-        <View
+
+          <View
           style={{
             width: '90%',
             alignSelf: 'center',
             position: 'absolute',
             bottom: '2%',
           }}>
-          <Button
+          <CommonButtonComp
             title={'Are you a member?'}
             onPress={() => {
               // navigation.navigate("Login")
               // navigation.closeDrawer();
             }}
+            iconLeft
+            // loading = {true}
             icon={
-              <VectorIcon
+            <VectorIcon
                 type={'FontAwesome'}
                 name={'lock'}
                 size={getFontSize(23)}
                 color={'white'}
               />
             }
-            titleStyle={[
-              styles.btnTitleStyle,
-              {
-                color: 'white',
-              },
-            ]}
-            containerStyle={[
-              styles.btnContainerStyle,
-              {
-                elevation: 6,
-                borderRadius: 100,
-              },
-            ]}
-            buttonStyle={[
-              {
-                width: '100%',
-                height: '100%',
-                borderRadius: 100,
-                backgroundColor: theme.color.primary,
-              },
-            ]}
-            letfIcon
           />
-          <Text
-            style={{
-              color: textColorHandler(),
-              textAlign: 'right',
-            }}>
-            Version 1.0.0
-          </Text>
-        </View>
+          
+        </View>      
       </SafeAreaView>
     );
   }

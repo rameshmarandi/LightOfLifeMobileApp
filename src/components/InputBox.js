@@ -594,7 +594,7 @@ function InputBox(props) {
               height: '100%',
               minHeight: getResHeight(70),
               maxHeight: getResHeight(250),
-              lineHeight: 24,
+              lineHeight: 26,
               fontSize: getFontSize(15),
               fontFamily: theme.font.regular,
               paddingTop:"5%",
@@ -607,9 +607,11 @@ function InputBox(props) {
               marginTop: 0,
             },
             {
+                textAlignVertical: 'center',
                 fontSize: getFontSize(15),
               fontFamily: theme.font.bold,
               paddingHorizontal: '1.5%',
+              // paddingTop:"5%"
 
             },
           ]}
@@ -856,7 +858,7 @@ const OTPInputBox = props => {
           {mandatory && (
             <Text
               style={{
-                color: theme.color.alert,
+                color: "red",
               }}>
               {' '}
               *

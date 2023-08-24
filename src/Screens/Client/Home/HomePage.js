@@ -9,11 +9,15 @@ import {
   StyleSheet,
   Alert,
   Image,
+  ScrollView,
   Animated,
   useWindowDimensions,
   FlatList,
   Switch,
+  KeyboardAvoidingView,
 } from 'react-native';
+
+import {Formik} from 'formik';
 import theme from '../../../utility/theme';
 import {
   backgroundColorHandler,
@@ -24,9 +28,7 @@ import {
 } from '../../../components/commonHelper';
 import messaging from '@react-native-firebase/messaging';
 import {connect} from 'react-redux';
-import {store} from '../../../utility/store';
-import {isDarkMode} from '../../../features/auth';
-import {backgroundColor, youtubeLink} from '../../../config/constants';
+import {ALL_LINKS} from '../../../config/constants';
 import * as PN from '../../../components/pushNotificaiton';
 import {sendOTPViaEmail} from '../../../apis/authRepo';
 import CustomHeader from '../../../components/CustomHeader';
@@ -35,18 +37,24 @@ import MsgConfig from '../../../config/MsgConfig';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import * as Animatable from 'react-native-animatable';
 import {TabView, SceneMap} from 'react-native-tab-view';
+import {Dropdown} from 'react-native-element-dropdown';
 
 import {
   SCREENWIDTH,
+  SCREENHEIGHT,
   getFontSize,
+  hp,
+  wp,
   getResHeight,
 } from '../../../utility/responsive';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 
 import {Button} from 'react-native-elements';
-import {VectorIcon} from '../../../components/VectorIcon';
 import GoogleMapComp from '../../../components/GoogleMapComp';
 import QuickRouteComp from '../../../components/QuickRouteComp';
+import {CommonButtonComp, CommonModal} from '../../../components/commonComp';
+import {VectorIcon} from '../../../components/VectorIcon';
+import InputBox from '../../../components/InputBox';
 
 const {width} = Dimensions.get('window');
 const itemWidth = width - 40; // Adjust this according to your layout
@@ -75,6 +83,7 @@ class HomePage extends Component {
     super(props);
     this.state = {
       activeSlide: 0,
+      isVisible: false,
     };
   }
   async componentDidMount() {
@@ -89,7 +98,7 @@ class HomePage extends Component {
     // await PN.getAsyncFCMToken()
     // const PNToken = await PN.getAsyncFCMToken();
   }
-  
+
   _renderItem = ({item}) => {
     return (
       <View
@@ -120,7 +129,19 @@ class HomePage extends Component {
             }}
             centerLogo={true}
           />
-      
+          <CommonModal
+            isVisible={this.state.isVisible}
+            onClick={() => {
+              this.setState({isVisible: false});
+            }}
+            renderUi={() => (
+              <PrayerRequestModal
+                onPress={() => {
+                  this.setState({isVisible: false});
+                }}
+              />
+            )}
+          />
         </View>
         <View style={{}}>
           <FlatList
@@ -204,14 +225,21 @@ class HomePage extends Component {
                           marginBottom: '4%',
                           borderRadius: 10,
                         }}>
-                          <View style={{
-                        marginTop:"2%",
-                        marginBottom:"2%"
-                      }}>
-                        <SectionHeader sectionTitle={`${MsgConfig.quickNav}`} />
-                      
+                        <View
+                          style={{
+                            marginTop: '2%',
+                            marginBottom: '2%',
+                          }}>
+                          <SectionHeader
+                            sectionTitle={`${MsgConfig.quickNav}`}
+                          />
                         </View>
-                        <QuickRouteComp {...this.props} />
+                        <QuickRouteComp
+                          modalVisible={() => {
+                            this.setState({isVisible: true});
+                          }}
+                          {...this.props}
+                        />
                       </Animatable.View>
                     </>
                   );
@@ -248,7 +276,6 @@ class HomePage extends Component {
                           marginBottom: '4%',
                           borderRadius: 10,
                         }}>
-                        
                         <SectionHeader
                           sectionTitle={`${MsgConfig.chruchLocation}`}
                         />
@@ -274,13 +301,217 @@ class HomePage extends Component {
     );
   }
 }
+
+const PrayerRequestModal = React.memo(props => {
+  const {loading, onPress} = props;
+  return (
+    <>
+      <View
+        style={{
+          minHeight: getResHeight(450),
+          maxHeight: getResHeight(650),
+          width: '90%',
+          alignSelf: 'center',
+          backgroundColor: 'white',
+          borderRadius: 30,
+          paddingHorizontal: '2%',
+          paddingTop: '2%',
+          paddingBottom: '30%',
+          overFlow:"hidden"
+        }}>
+        <Formik
+          validationSchema={theme.validationSchema.login}
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={async () => {}}>
+          {({
+            values,
+            isValid,
+            dirty,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            setFieldValue,
+            setFieldTouched,
+          }) => (
+            <>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+                style={{
+                  flex: 1,
+                  // paddingBottom: '40%',
+                }}>
+                {/* <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}> */}
+                <View
+                  style={{
+                    width: '90%',
+                    alignSelf: 'center',
+                    paddingTop: getResHeight(10),
+                  }}>
+                  <InputBox
+                    label={'Name (Optional):'}
+                    placeholder={'Enter your name'}
+                    value={values.name}
+                    errorText={errors.name}
+                    autoCapitalize="none"
+                    onChangeText={text => {
+                      setFieldValue(
+                        'name',
+                        text.replace(
+                          /[`~!#$%^&*()_|+\-=?;: '",<>\{\}\[\]\\\/]/gi,
+                          '',
+                        ),
+                      );
+                    }}
+                    onFocus={() => setFieldTouched('name')}
+                    onBlur={() => handleBlur('name')}
+                  />
+                  <InputBox
+                    label={'Email (Optional):'}
+                    placeholder={'Enter Email'}
+                    keyboardType={'email-address'}
+                    value={values.email}
+                    errorText={errors.email}
+                    onChangeText={text => setFieldValue('email', text)}
+                    onFocus={() => setFieldTouched('email')}
+                    onBlur={() => handleBlur('email')}
+                  />
+                  <Text
+                    style={{
+                      marginTop: '5%',
+                      color: '#666666',
+                      paddingBottom: '2%',
+                      fontFamily: theme.font.Helvetica,
+                      fontSize: getFontSize(13),
+                      fontWeight: '700',
+                    }}>
+                    Prayer Category
+                  </Text>
+                  <Dropdown
+                    style={styles.dropdown}
+                    // disable={!this.state.isEdit}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={[
+                      {
+                        label: 'Health',
+                        value: 'Health',
+                      },
+                      {
+                        label: 'Family',
+                        value: 'Family',
+                      },
+                      {
+                        label: 'Relationships',
+                        value: 'Relationships',
+                      },
+                      {
+                        label: 'Finances',
+                        value: 'Finances',
+                      },
+                      {
+                        label: 'Spiritual Growth',
+                        value: 'Spiritual Growth',
+                      },
+                      {
+                        label: 'Others',
+                        value: 'Others',
+                      },
+                    ]}
+                    maxHeight={getResHeight(150)}              
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select item"
+                    value={'Male'}
+                    onChange={item => {
+                      // this.setState({gender: item.value});
+                    }}
+                    renderItem={item => {
+                      return (
+                        <>
+                          <View style={styles.item}>
+                            <Text style={styles.textItem}>{item.label}</Text>
+                          </View>
+                        </>
+                      );
+                    }}
+                  />
+                  
+                  <InputBox
+                    multiline
+                    label={'Prayer Request'}
+                    placeholder={'Type your prayer request...'}
+                    value={values.password}
+                    errorText={errors.password}
+                    onPress={showPassword => {
+                      this.setState({
+                        showPassword: !this.state.showPassword,
+                      });
+                    }}
+                    showEye={true}
+                    onChangeText={text => {
+                      setFieldValue('password', text);
+                    }}
+                    onFocus={() => setFieldTouched('password')}
+                    onBlur={() => handleBlur('password')}
+                  />
+                  <Text >Note:Your prayer requests will be sent directly to the pastor. </Text>
+                </View>
+                {/* </KeyboardAvoidingView> */}
+              </ScrollView>
+              <View
+                style={{
+                  width: '100%',
+                  // backgroundColor:"red",
+                  // paddingVertical:"5%",
+                  position: 'absolute',
+                  alignSelf: 'center',
+                  bottom: '2%',
+                }}>
+                <View
+                  style={{
+                    width: '90%',
+                    alignSelf: 'center',
+                  }}>
+                  <CommonButtonComp
+                    title={'Submit prayer'}
+                    onPress={onPress}
+                    iconLeft
+                    loading={loading}
+                    icon={
+                      <VectorIcon
+                        type={'FontAwesome5'}
+                        name={'pray'}
+                        size={getFontSize(23)}
+                        color={'white'}
+                      />
+                    }
+                  />
+                </View>
+              </View>
+            </>
+          )}
+        </Formik>
+      </View>
+    </>
+  );
+});
 const YoutubeComp = () => {
   return (
     <>
       <YoutubePlayer
         width={'100%'}
         height={getResHeight(200)}
-        videoId={extractVideoId(youtubeLink)}
+        videoId={extractVideoId(ALL_LINKS.youtubeLink)}
         webViewProps={{
           scrollEnabled: false,
           renderToHardwareTextureAndroid: true,
@@ -485,6 +716,50 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 5,
     backgroundColor: textColorHandler(),
+  },
+
+  //Dropdown imle
+  lableStyle: {
+    fontSize: getFontSize(12),
+    fontWeight: '600',
+    fontFamily: theme.font.HelveticaBold,
+    color: '#666666',
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    width: '100%',
+    height: 50,
+    backgroundColor: '#F8F8F8',
+    borderRadius: 10,
+    paddingHorizontal: '5%',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 20,
+    fontSize: 16,
   },
 });
 

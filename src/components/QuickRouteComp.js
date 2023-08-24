@@ -13,6 +13,8 @@ import {store} from '../utility/store';
 import { textColorHandler } from './commonHelper';
 
 const QuickRouteComp = (props) => {
+
+  const {modalVisible} = props
   let darkModeStatus = store.getState().auth.isDarkMode;
   let navRoute = [
     {
@@ -98,7 +100,7 @@ const QuickRouteComp = (props) => {
   ];
   const NavRouteItem = (props) => {
 
-    let {icon, lable, navigation,navRoute} = props
+    let {icon, lable, navigation,navRoute ,modalVisible, index} = props
     let darkModeStatus = store.getState().auth.isDarkMode;
     return (
       <View
@@ -109,6 +111,9 @@ const QuickRouteComp = (props) => {
         <Button
           type={'clear'}
           onPress={() => {
+            if(index ==1){
+              modalVisible()
+            }
           navigation.navigate(navRoute.route)
           }}
           iconPosition="right"
@@ -153,8 +158,8 @@ const QuickRouteComp = (props) => {
     );
   };
 
-  const renderNavRouteItem = ({item}) => (
-    <NavRouteItem icon={item.icon} lable={item.lable} navRoute = {item} {...props}/>
+  const renderNavRouteItem = ({item , index}) => (
+    <NavRouteItem icon={item.icon} modalVisible = {modalVisible} lable={item.lable} navRoute = {item} {...props} index={index}/>
   );
 
   return (

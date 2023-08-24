@@ -18,18 +18,18 @@ import {
   backgroundColorHandler,
   textColorHandler,
 } from '../../../components/commonHelper';
-
 import {connect} from 'react-redux';
 import {store} from '../../../utility/store';
-
+import * as Animatable from 'react-native-animatable';
 import CustomHeader from '../../../components/CustomHeader';
-
+import {ALL_LINKS} from '../../../config/constants';
 import {
   SCREENWIDTH,
   SCREENHEIGHT,
   getFontSize,
   getResHeight,
 } from '../../../utility/responsive';
+
 const imageSize = () => {
   return {
     height: 60,
@@ -40,106 +40,52 @@ const imageSize = () => {
 const FreeResourceData = [
   {
     id: 0,
-    imageLink: (
-      <Image
-        source={require('../../../assets/resources/missionary.jpg')}
-        style={imageSize()}
-      />
-    ),
+    imageLink: <Image source={theme.assets.missionary} style={imageSize()} />,
     title: 'Misonary Biography',
-    //   URL: MISSIONARY_BIOGRAPHY,
+    URL: ALL_LINKS.MISSIONARY_BIOGRAPHY,
   },
   {
     id: 1,
-    imageLink: (
-      <Image
-        source={require('../../../assets/resources/theology.png')}
-        style={imageSize()}
-      />
-    ),
+    imageLink: <Image source={theme.assets.theology} style={imageSize()} />,
     title: 'Theology & More',
     type: 'theology',
   },
 
   {
     id: 2,
-    imageLink: (
-      <Image
-        source={require('../../../assets/resources/gotquestion.png')}
-        style={imageSize()}
-      />
-    ),
+    imageLink: <Image source={theme.assets.gotquestion} style={imageSize()} />,
 
     title: 'GotQuestion (English)',
-    //   URL: GOTQUESTION_ENGLISH,
+    URL: ALL_LINKS.GOTQUESTION_ENGLISH,
   },
   {
     id: 3,
-    imageLink: (
-      <Image
-        source={require('../../../assets/resources/gotquestion.png')}
-        style={imageSize()}
-      />
-    ),
+    imageLink: <Image source={theme.assets.gotquestion} style={imageSize()} />,
     title: 'GotQuestion (Hindi)',
-    //   URL: GOTQUESTION_HINDI,
+    URL: ALL_LINKS.GOTQUESTION_HINDI,
   },
   {
     id: 4,
-    imageLink: (
-      <Image
-        source={require('../../../assets/resources/unity.png')}
-        style={imageSize()}
-      />
-    ),
+    imageLink: <Image source={theme.assets.unity} style={imageSize()} />,
     title: 'Christian Rights',
     //   URL: CHRISTIAN_RIGHTS,
   },
 
-  // {
-  //   id: 5,
-  //   imageLink: (
-  //     <Image
-  //       source={require('../../assets/Images/cross2.png')}
-  //       style={{
-  //         height: 100,
-  //         width: 100,
-  //       }}
-  //     />
-  //   ),
+  {
+    id: 6,
+    imageLink: (
+      <Image
+        source={theme.assets.ebook}
+        style={{
+          height: 100,
+          width: 100,
+        }}
+      />
+    ),
 
-  //   title: 'Tracks (PDF)',
-  //   URL: Tracks,
-  // },
-  // {
-  //   id: 6,
-  //   imageLink: (
-  //     <Image
-  //       source={require('../../assets/Images/ebook.png')}
-  //       style={{
-  //         height: 100,
-  //         width: 100,
-  //       }}
-  //     />
-  //   ),
-
-  //   title: 'E-Books (Free)',
-  //   URL: E_BOOKS,
-  // },
-  // {
-  //   id: 7,
-  //   imageLink: (
-  //     <Image
-  //       source={require('../../assets/Images/location.png')}
-  //       style={{
-  //         height: 100,
-  //         width: 100,
-  //       }}
-  //     />
-  //   ),
-  //   type: 'location',
-  //   title: 'Biblical Location',
-  // },
+    title: 'E-Books (Free)',
+    URL: ALL_LINKS.E_BOOKS,
+  },
 ];
 class FreeResource extends Component {
   constructor(props) {
@@ -187,7 +133,6 @@ class FreeResource extends Component {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 flexWrap: 'wrap',
-                // flex:1,
               }}
               data={FreeResourceData}
               keyExtractor={item => item.id}
@@ -219,44 +164,48 @@ const ResourceCard = props => {
   //   const dark = darkTheme?.darktheme
   return (
     <>
-      <TouchableOpacity
-        onPress={() => {
-          //   if (type) {
-          //     navigation.navigate('MoreFreeResource', {type: `${type}`})
-          //   } else {
-          //     WebViewFunction(URL)
-          //   }
-        }}
-        style={{
-          width: 170,
-          height: 120,
-          borderWidth: 1,
-          borderColor: textColorHandler(),
-          backgroundColor: backgroundColorHandler(),
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: '10%',
-          padding: '10%',
-          shadowColor: isDarkMode ? theme.color.white : 'black',
-          shadowOffset: {width: 0, height: 1},
-          shadowRadius: 5,
-          shadowOpacity: 0.3,
-          elevation: 8,
-          borderRadius: 20,
-        }}>
-        <View>{imageLink}</View>
-        <Text
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('URL', URL);
+            //   if (type) {
+            //     navigation.navigate('MoreFreeResource', {type: `${type}`})
+            //   } else {
+            //     WebViewFunction(URL)
+            //   }
+          }}
           style={{
-            fontSize: getFontSize(13),
-            color: textColorHandler(),
-            fontFamily: theme.font.medium,
-            textAlign: 'center',
+            width: 160,
+            height: 120,
+            borderWidth: 1,
+            borderColor: theme.color.primary,
+            //  textColorHandler(),
+            backgroundColor: backgroundColorHandler(),
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '10%',
+            padding: '10%',
+            shadowColor: isDarkMode ? theme.color.white : 'black',
+            shadowOffset: {width: 0, height: 1},
+            shadowRadius: 5,
+            shadowOpacity: 0.3,
+            elevation: 8,
+            borderRadius: 20,
           }}>
-          {title}
-        </Text>
-      </TouchableOpacity>
+          <View>{imageLink}</View>
+          <Text
+            style={{
+              fontSize: getFontSize(13),
+              color: textColorHandler(),
+              fontFamily: theme.font.medium,
+              textAlign: 'center',
+            }}>
+            {title}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </>
-  );
+  )
 };
 
 const styles = StyleSheet.create({
