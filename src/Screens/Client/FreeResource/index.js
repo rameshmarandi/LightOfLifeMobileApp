@@ -39,11 +39,21 @@ const imageSize = () => {
 
 const FreeResourceData = [
   {
-    id: 0,
-    imageLink: <Image source={theme.assets.missionary} style={imageSize()} />,
-    title: 'Misonary Biography',
-    URL: ALL_LINKS.MISSIONARY_BIOGRAPHY,
+    id: 6,
+    imageLink: (
+      <Image
+        source={theme.assets.ebook}
+        style={{
+          height: 100,
+          width: 100,
+        }}
+      />
+    ),
+
+    title: 'E-Books (Free)',
+    URL: ALL_LINKS.E_BOOKS,
   },
+
   {
     id: 1,
     imageLink: <Image source={theme.assets.theology} style={imageSize()} />,
@@ -64,6 +74,12 @@ const FreeResourceData = [
     title: 'GotQuestion (Hindi)',
     URL: ALL_LINKS.GOTQUESTION_HINDI,
   },
+    {
+    id: 0,
+    imageLink: <Image source={theme.assets.missionary} style={imageSize()} />,
+    title: 'Misonary Biography',
+    URL: ALL_LINKS.MISSIONARY_BIOGRAPHY,
+  },
   {
     id: 4,
     imageLink: <Image source={theme.assets.unity} style={imageSize()} />,
@@ -71,21 +87,7 @@ const FreeResourceData = [
     //   URL: CHRISTIAN_RIGHTS,
   },
 
-  {
-    id: 6,
-    imageLink: (
-      <Image
-        source={theme.assets.ebook}
-        style={{
-          height: 100,
-          width: 100,
-        }}
-      />
-    ),
-
-    title: 'E-Books (Free)',
-    URL: ALL_LINKS.E_BOOKS,
-  },
+  
 ];
 class FreeResource extends Component {
   constructor(props) {
@@ -176,10 +178,9 @@ const ResourceCard = props => {
           }}
           style={{
             width: 160,
-            height: 120,
+            height: 150,
             borderWidth: 1,
-            borderColor: theme.color.primary,
-            //  textColorHandler(),
+            borderColor: theme.color.primary,            
             backgroundColor: backgroundColorHandler(),
             justifyContent: 'center',
             alignItems: 'center',
@@ -195,7 +196,7 @@ const ResourceCard = props => {
           <View>{imageLink}</View>
           <Text
             style={{
-              fontSize: getFontSize(13),
+              fontSize: getFontSize(11),
               color: textColorHandler(),
               fontFamily: theme.font.medium,
               textAlign: 'center',

@@ -6,6 +6,7 @@ import {
   Share,
   View,
   SafeAreaView,
+  Text,
   Modal,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -27,6 +28,10 @@ import {
   wp,
 } from '../utility/responsive';
 import {VectorIcon} from './VectorIcon';
+
+import {Dropdown} from 'react-native-element-dropdown';
+import { store } from '../utility/store';
+  const isDarkMode = store.getState().auth.isDarkMode
 
 export const CommonModal = props => {
   const {onClick, isVisible, renderUi, loading} = props;
@@ -109,6 +114,83 @@ export const CommonButton = props => {
     />
   );
 };
+export const Note = props => {
+  return (
+    <View
+      style={{
+        width: '100%',
+        backgroundColor: 'rgba(47, 59, 117, 0.6)',
+        padding: '5%',
+        borderRadius: 10,
+        marginTop: '4%',
+      }}>
+      <Text
+        style={[
+          styles.noticeStyle,
+          {
+            color: 'black',
+            fontWeight: '800',
+          },
+        ]}>
+        Note:
+      </Text>
+      <Text
+        style={[
+          {
+            lineHeight: 18,
+            color: 'white',
+          },
+        ]}>
+        {props.desc}
+      </Text>
+    </View>
+  );
+};
+export const DropdownComp = (props) => {
+  const {dropdownData ,placeholder, value ,onChange}  = props
+  
+
+  const darkmodeColorHandler = ()=>{
+    if(isDarkMode){
+      return theme.color.white
+    }else{
+      return theme.color.black
+    }
+  }
+  return (
+    <>
+      <Dropdown
+        data={dropdownData}
+        maxHeight={getResHeight(250)}
+        labelField="label"
+        valueField="value"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        style={styles.dropdown}
+        placeholderStyle={[styles.placeholderStyle , {
+          color:darkmodeColorHandler()
+        }]}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        containerStyle = {styles.containerStyle}
+        iconStyle={styles.iconStyle}
+        itemContainerStyle = {{
+          color :darkmodeColorHandler()
+        }}
+        renderItem={item => {
+          return (
+            <>
+              <View style={styles.item}>
+                <Text style={styles.textItem}>{item.label}</Text>
+              </View>
+            </>
+          );
+        }}
+      />
+    </>
+  );
+};
 export const CommonButtonComp = props => {
   const {
     onPress,
@@ -124,37 +206,33 @@ export const CommonButtonComp = props => {
     containerStyle,
   } = props;
   return (
-  
-      <Button
-        title={title}
-        onPress={onPress}
-        icon={
-          icon
-        }
-        titleStyle={[
-          styles.btnTitleStyle,
-          {
-            color: 'white',
-          },
-        ]}      
-        containerStyle={[
-          styles.btnContainerStyle,
-          {
-            elevation: 6,
-            borderRadius: 100,
-          },
-        ]}
-        buttonStyle={[
-          {
-            width: '100%',
-            height: '100%',
-            borderRadius: 100,
-            backgroundColor: theme.color.primary,
-          },
-        ]}
-        {...props}
-      />
-
+    <Button
+      title={title}
+      onPress={onPress}
+      icon={icon}
+      titleStyle={[
+        styles.btnTitleStyle,
+        {
+          color: 'white',
+        },
+      ]}
+      containerStyle={[
+        styles.btnContainerStyle,
+        {
+          elevation: 6,
+          borderRadius: 100,
+        },
+      ]}
+      buttonStyle={[
+        {
+          width: '100%',
+          height: '100%',
+          borderRadius: 100,
+          backgroundColor: theme.color.primary,
+        },
+      ]}
+      {...props}
+    />
   );
 };
 const styles = StyleSheet.create({
@@ -181,5 +259,59 @@ const styles = StyleSheet.create({
     marginBottom: '1.5%',
     width: '100%',
     height: getResHeight(45),
+  },
+   //Dropdown imle
+  lableStyle: {
+    fontSize: getFontSize(12),
+    fontWeight: '600',
+    fontFamily: theme.font.HelveticaBold,
+    color: '#666666',
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: isDarkMode ? '#666666':'lightgray',
+    width: '100%',
+    height: 50,
+    backgroundColor:isDarkMode ? "black": '#F8F8F8',
+    borderRadius: 10,
+  
+    paddingHorizontal: '5%',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 16,
+    color:isDarkMode ? "white":"black"
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color:isDarkMode  ? '#ffffff':"black"
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color:isDarkMode ? "white":"black"
+  },
+  containerStyle : {
+    borderRadius:10,
+    backgroundColor:isDarkMode ? "black" : "white"
+    // borderToLeftRadius:10, 
+    // borderToRightRadius:10, 
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 20,
+    fontSize: 16,
+    backgroundColor:"black"
   },
 });

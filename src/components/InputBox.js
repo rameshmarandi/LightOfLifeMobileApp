@@ -28,6 +28,7 @@ import theme from '../utility/theme';
 import {VectorIcon} from '../components/VectorIcon';
 import {changeDateFormat} from '../components/commonHelper';
 import {getYears, removeSpace} from '../components/commonFunction';
+import { store } from '../utility/store';
 
 function arrayObjtoObj(data) {
   try {
@@ -48,6 +49,7 @@ function arrayObjtoObj(data) {
 }
 
 function InputBox(props) {
+  const isDarkMode = store.getState().auth.isDarkMode
   const {style, onPressIn, onPressOut} = props;
   const {onKeyPress, onChangeText, disableSpace, mandatory, onFocus, onBlur} =
     props;
@@ -199,7 +201,7 @@ function InputBox(props) {
     try {
       let obj = arrayObjtoObj(props.style);
       let textStyle = {
-        color: disabled ? theme.color.placeholder : theme.color.primary,
+        color: disabled ? theme.color.placeholder : isDarkMode ? "white":theme.color.primary,
         fontFamily: theme.font.medium,
         fontSize: getFontSize(12),
       };
@@ -381,10 +383,10 @@ function InputBox(props) {
               ? keyboardType
               : 'default'
           }
-          placeholderTextColor={'red'}
+          // placeholderTextColor={'red'}
           maxLength={countrycodeDropdown ? 10 : maxLength}
-          outlineColor={outlineColor}
-          activeOutlineColor={activeOutlineColor}
+          outlineColor={isDarkMode? "grey":outlineColor}
+          activeOutlineColor={isDarkMode? theme.color.primary:activeOutlineColor}
           // disabled={disabled}
           theme={{
             colors: {

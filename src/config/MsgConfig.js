@@ -22,10 +22,13 @@ const DrawerMenu = {
    socialMedia:"Social Media",
    quickNav:"Quick Route Guidance"
 } 
+ const prayerRequest = {
+    prayerRequestNote :"Your prayer requests will be sent directly to the pastor."
+} 
 
 export default message = {
   ...DrawerMenu,
   ...HomeModule,
-
+...prayerRequest,
   
 };

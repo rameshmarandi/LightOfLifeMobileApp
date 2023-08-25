@@ -137,8 +137,8 @@ const QuickRouteComp = (props) => {
           }}
           containerStyle={[
             {
-              width: 90,
-              height: 90,
+              width: 98,
+              height: 98,
               justifyContent: 'center',
               textAlign: 'center',
               backgroundColor: darkModeStatus ?theme.color.iconCircleBg : theme.color.iceWhite,
@@ -159,11 +159,19 @@ const QuickRouteComp = (props) => {
   };
 
   const renderNavRouteItem = ({item , index}) => (
-    <NavRouteItem icon={item.icon} modalVisible = {modalVisible} lable={item.lable} navRoute = {item} {...props} index={index}/>
+    <NavRouteItem
+     icon={item.icon}
+      modalVisible = {modalVisible} 
+      lable={item.lable} 
+      navRoute = {item}
+      index={index}
+      {...props} />
   );
 
   return (
     <>
+
+  
       <FlatList
         data={navRoute}
         renderItem={renderNavRouteItem}
@@ -171,9 +179,13 @@ const QuickRouteComp = (props) => {
         numColumns={3}
         containerStyle={{
           width:"100%",
-          alignSelf:"center"
+          height:"100%",
+          alignSelf:"center",
+          justifyContent:"center",
+          alignItem:"center"
         }}
       />
+  
     </>
   );
 };
