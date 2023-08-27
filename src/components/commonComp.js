@@ -115,11 +115,13 @@ export const CommonButton = props => {
   );
 };
 export const Note = props => {
+  const isDarkMode = store.getState().auth.isDarkMode
   return (
     <View
       style={{
         width: '100%',
-        backgroundColor: 'rgba(47, 59, 117, 0.6)',
+        backgroundColor: '#1d3766',
+        // backgroundColor: 'rgba(47, 59, 117, 0.6)',
         padding: '5%',
         borderRadius: 10,
         marginTop: '4%',
@@ -128,7 +130,8 @@ export const Note = props => {
         style={[
           styles.noticeStyle,
           {
-            color: 'black',
+            color:"white",
+            // color:isDarkMode ? theme.color.white: 'black',
             fontWeight: '800',
           },
         ]}>
@@ -148,15 +151,8 @@ export const Note = props => {
 };
 export const DropdownComp = (props) => {
   const {dropdownData ,placeholder, value ,onChange}  = props
-  
+    const isDarkMode = store.getState().auth.isDarkMode
 
-  const darkmodeColorHandler = ()=>{
-    if(isDarkMode){
-      return theme.color.white
-    }else{
-      return theme.color.black
-    }
-  }
   return (
     <>
       <Dropdown
@@ -167,22 +163,32 @@ export const DropdownComp = (props) => {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        style={styles.dropdown}
-        placeholderStyle={[styles.placeholderStyle , {
-          color:darkmodeColorHandler()
+        style={[styles.dropdown,{
+          backgroundColor:isDarkMode ? theme.color.darkTheme: theme.color.white,
+          borderColor:isDarkMode ?theme.color.darkModeTextInputOutline :theme.color.normalModeTextInputOutline,          
         }]}
-        selectedTextStyle={styles.selectedTextStyle}
+        placeholderStyle={[styles.placeholderStyle , {
+          color:  isDarkMode ?  theme.color.white: theme.color.normalModeTextInputOutline,
+          
+        }]}
+        selectedTextStyle={[styles.selectedTextStyle , {
+          color:  isDarkMode ?  theme.color.white: theme.color.primary,
+        }]}
         inputSearchStyle={styles.inputSearchStyle}
         containerStyle = {styles.containerStyle}
         iconStyle={styles.iconStyle}
         itemContainerStyle = {{
-          color :darkmodeColorHandler()
+          color :isDarkMode ? theme.color.darkTheme: theme.color.white,
+          backgroundColor:isDarkMode ? theme.color.darkTheme: theme.color.white,
+          borderColor: isDarkMode ? '#666666':'#666666',  
         }}
         renderItem={item => {
           return (
             <>
               <View style={styles.item}>
-                <Text style={styles.textItem}>{item.label}</Text>
+                <Text style={[styles.textItem,{
+                  color:theme.color.primary
+                }]}>{item.label}</Text>
               </View>
             </>
           );
@@ -214,6 +220,15 @@ export const CommonButtonComp = props => {
         styles.btnTitleStyle,
         {
           color: 'white',
+        },
+      ]}
+      disabledStyle={{
+        backgroundColor: theme.color.disabledBtn,
+      }}
+      disabledTitleStyle={[
+        styles.btnTitleStyle,
+        {
+          color: '#cccccc',
         },
       ]}
       containerStyle={[
@@ -268,14 +283,12 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   dropdown: {
-    borderWidth: 1,
-    borderColor: isDarkMode ? '#666666':'lightgray',
+    borderWidth: 1,        
     width: '100%',
-    height: 50,
-    backgroundColor:isDarkMode ? "black": '#F8F8F8',
+    height: 50,    
     borderRadius: 10,
-  
     paddingHorizontal: '5%',
+    
   },
   icon: {
     marginRight: 5,
@@ -285,25 +298,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  
   },
   textItem: {
     flex: 1,
     fontSize: 16,
-    color:isDarkMode ? "white":"black"
+    // color:
+    // isDarkMode ? "white":theme.color.darkTheme
   },
   placeholderStyle: {
     fontSize: 16,
-    color:isDarkMode  ? '#ffffff':"black"
+    color:isDarkMode  ? '#ffffff':theme.color.darkTheme
   },
   selectedTextStyle: {
     fontSize: 16,
-    color:isDarkMode ? "white":"black"
+    color:isDarkMode ? "green":theme.color.darkTheme
   },
   containerStyle : {
     borderRadius:10,
-    backgroundColor:isDarkMode ? "black" : "white"
-    // borderToLeftRadius:10, 
-    // borderToRightRadius:10, 
+    // backgroundColor:"red"
+    backgroundColor:isDarkMode ? theme.color.darkTheme : "white"  
   },
   iconStyle: {
     width: 20,
@@ -312,6 +326,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 20,
     fontSize: 16,
-    backgroundColor:"black"
+    backgroundColor:theme.color.darkTheme
   },
 });

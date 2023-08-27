@@ -1,5 +1,14 @@
 import * as Yup from 'yup';
 
+
+//New Validation START
+const prayerRequest = Yup.object().shape({
+    name: Yup.string().required('Please enter your user name'),
+    email: Yup.string().email('Please enter valid email').required('Please enter valid email'),
+
+});
+
+//New Validation END
 const login = Yup.object().shape({
   // mobile: Yup.string()
   //   .required('The mobile number is required')
@@ -109,49 +118,12 @@ const register = Yup.object().shape({
       'Please enter at least 8 Character, 1 uppercase character and 1 number',
     ),
 });
-// const register1 = Yup.object().shape({
-//     CompanyName: Yup.string()
-//   .required('Enter your company name'),
-//   GST: Yup.string()
-//   .required('Enter your GST Code'),
-//   mobile: Yup.string()
-//   .required('The mobile number is required')
-//   .matches(/^[0-9]+$/, 'Must be only digits')
-//   .min(10, 'Must be exactly 10 digits')
-//   .max(10, 'Must be exactly 10 digits'),
 
-// });
-const register2 = Yup.object().shape({
-  // Username: Yup.string()
-  // .required('Please enter username '),
-  // Password: Yup.string()
-  // .min(
-  //   8,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // )
-  // .matches(
-  //   /[A-Z]+/,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // )
-  // .matches(
-  //   /\d+/,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // ),
-  // ConfirmPassword: Yup.string()
-  // .min(
-  //   8,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // )
-  // .matches(
-  //   /[A-Z]+/,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // )
-  // .matches(
-  //   /\d+/,
-  //   'Please enter at least 8 Character, 1 uppercase character and 1 number',
-  // ),
-});
 export default validation = {
+
+  //New validation START
+  prayerRequest,
+  //New validation END
   login,
   registerUser,
   registerCompny,

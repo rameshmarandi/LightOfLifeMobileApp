@@ -33,8 +33,14 @@ const color = {
   darkTheme:"#000f0b",
   secondary: '#E66EA7',
   iconCircleBg: '#343434',
+  //Textinput start
+  darkModeTextInputOutline : '#666666',
+  normalModeTextInputOutline: '#C4C4C4',
+  // '#C4C4C4',
+
+  // Textinput end
   seletedBtn: '#303254',
-  disabledBtn: 'rgba(48,50,84,0.8)',
+  disabledBtn: '#434e82',
   dimBlack: '#353535',
   dimGray: '#828282',
   lableColor: '#666666',

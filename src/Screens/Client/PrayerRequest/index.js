@@ -63,268 +63,188 @@ import InputBox from '../../../components/InputBox';
 
 const PrayerRequest = React.memo(props => {
   const {loading, isVisible, onClick, onPress} = props;
+  const [prayerCate, setPrayerCate] = useState('');
   return (
     <>
-      <Modal visible={isVisible} animationType="slide" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: backgroundColorHandler(),
-            //   minHeight: getResHeight(450),
-            //   maxHeight: getResHeight(650),
-            //   width: '90%',
-            //   alignSelf: 'center',
-
-            //   borderRadius: 30,
-            //   paddingHorizontal: '2%',
-            //   paddingTop: '2%',
-            //   paddingBottom: '30%',
-            //   overFlow: 'hidden',
-          }}>
-          <View>
-            <CustomHeader
-              backPress={onClick}
-              screenTitle={'Prayer request'}
-              // centerLogo={true}
-            />
-          </View>
-          <Formik
-            //   validationSchema={theme.validationSchema.login}
-            initialValues={{
-    prayerCategory : ""
-            }}
-            onSubmit={async () => {}}>
-            {({
-              values,
-              isValid,
-              dirty,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              setFieldValue,
-              setFieldTouched,
-            }) => (
-              <>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  bounces={false}
-                  style={{
-                    flex: 1,
-                  }}>
-                  <View
+      <SafeAreaView
+        style={{
+          flex: 1,
+        }}>
+        <Modal visible={isVisible} animationType="slide" transparent={true}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: backgroundColorHandler(),
+            }}>
+            <View>
+              <CustomHeader
+                backPress={onClick}
+                screenTitle={'Prayer request'}
+                // centerLogo={true}
+              />
+            </View>
+            <Formik
+              validationSchema={theme.validationSchema.prayerRequest}
+              initialValues={{
+                name:"",
+                email:"",
+                prayerCategory: '',
+                prayerDesc : ""
+              }}
+              onSubmit={async () => {}}>
+              {({
+                values,
+                isValid,
+                dirty,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+                setFieldTouched,
+              }) => (
+                <>
+                  <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}
                     style={{
-                      width: '88%',
-                      alignSelf: 'center',
-                      paddingTop: getResHeight(10),
-                      paddingBottom: '20%',
+                      flex: 1,
                     }}>
-                    <InputBox
-                      label={'Name (Optional):'}
-                      placeholder={'Enter your name'}
-                      value={values.name}
-                      errorText={errors.name}
-                      autoCapitalize="none"
-                      onChangeText={text => {
-                        setFieldValue(
-                          'name',
-                          text.replace(
-                            /[`~!#$%^&*()_|+\-=?;: '",<>\{\}\[\]\\\/]/gi,
-                            '',
-                          ),
-                        );
-                      }}
-                      onFocus={() => setFieldTouched('name')}
-                      onBlur={() => handleBlur('name')}
-                      outlineColor = {"red"}
-    activeOutlineColor = {"green"}
-                    />
-                    <InputBox
-                      label={'Email (Optional):'}
-                      placeholder={'Enter Email'}
-                      keyboardType={'email-address'}
-                      value={values.email}
-                      errorText={errors.email}
-                      onChangeText={text => setFieldValue('email', text)}
-                      onFocus={() => setFieldTouched('email')}
-                      onBlur={() => handleBlur('email')}
-                    />
-                    <Text
+                    <View
                       style={{
-                        marginTop: '5%',
-                        color: '#666666',
-                        paddingBottom: '2%',
-                        fontFamily: theme.font.Helvetica,
-                        fontSize: getFontSize(13),
-                        fontWeight: '700',
+                        width: '88%',
+                        alignSelf: 'center',
+                        paddingTop: getResHeight(10),
+                        paddingBottom: '20%',
                       }}>
-                      Prayer Category
-                    </Text>
+                      <InputBox
+                        label={'Name (Optional):'}
+                        placeholder={'Enter your name'}
+                        value={values.name}
+                        errorText={errors.name}
+                        autoCapitalize="none"
+                        onChangeText={text => {
+                          let spceRemove = text.trimStart();
+                          setFieldValue(
+                            'name',
+                            spceRemove.replace(
+                              /[`~!#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
+                              '',
+                            ),
+                          );
+                        }}
+                        onFocus={() => setFieldTouched('name')}
+                        onBlur={() => handleBlur('name')}
+                      />
+                      <InputBox
+                        label={'Email (Optional):'}
+                        placeholder={'Enter Email'}
+                        keyboardType={'email-address'}
+                        value={values.email}
+                        errorText={errors.email}
+                        onChangeText={text => {
+                          let spceRemove = text.trimStart();
+                          setFieldValue('email', spceRemove);
+                        }}
+                        onFocus={() => setFieldTouched('email')}
+                        onBlur={() => handleBlur('email')}
+                      />
+                      <Text
+                        style={{
+                          color: '#666666',
+                          paddingBottom: '2%',
+                          fontFamily: theme.font.Helvetica,
+                          fontSize: getFontSize(13),
+                          fontWeight: '700',
+                        }}>
+                        Prayer Category
+                      </Text>
 
-                    <DropdownComp
-                      dropdownData={[
-                        {
-                          label: 'Health',
-                          value: 'Health',
-                        },
-                        {
-                          label: 'Family',
-                          value: 'Family',
-                        },
-                        {
-                          label: 'Relationships',
-                          value: 'Relationships',
-                        },
-                        {
-                          label: 'Finances',
-                          value: 'Finances',
-                        },
-                        {
-                          label: 'Spiritual Growth',
-                          value: 'Spiritual Growth',
-                        },
-                        {
-                          label: 'Others',
-                          value: 'Others',
-                        },
-                      ]}
-                      vlaue={values.prayerCategory}
-                      onChange = {(item)=>{
-// setFieldValue('prayerCategory', item.value)
-                      }}
-                    />
+                      <DropdownComp
+                        dropdownData={[
+                          {
+                            label: 'Health',
+                            value: 'Health',
+                          },
+                          {
+                            label: 'Family',
+                            value: 'Family',
+                          },
+                          {
+                            label: 'Relationships',
+                            value: 'Relationships',
+                          },
+                          {
+                            label: 'Finances',
+                            value: 'Finances',
+                          },
+                          {
+                            label: 'Spiritual Growth',
+                            value: 'Spiritual Growth',
+                          },
+                          {
+                            label: 'Others',
+                            value: 'Others',
+                          },
+                        ]}
+                        vlaue={prayerCate}
+                        onChange={item => {
+                          setPrayerCate(item.vlaue);
+                        }}
+                      />
 
-                    {/* <Dropdown
-                      style={styles.dropdown}
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={[
-                        {
-                          label: 'Health',
-                          value: 'Health',
-                        },
-                        {
-                          label: 'Family',
-                          value: 'Family',
-                        },
-                        {
-                          label: 'Relationships',
-                          value: 'Relationships',
-                        },
-                        {
-                          label: 'Finances',
-                          value: 'Finances',
-                        },
-                        {
-                          label: 'Spiritual Growth',
-                          value: 'Spiritual Growth',
-                        },
-                        {
-                          label: 'Others',
-                          value: 'Others',
-                        },
-                      ]}
-                      maxHeight={getResHeight(150)}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="Select item"
-                      value={'Male'}
-                      onChange={item => {
-                        // this.setState({gender: item.value});
-                      }}
-                      renderItem={item => {
-                        return (
-                          <>
-                            <View style={styles.item}>
-                              <Text style={styles.textItem}>{item.label}</Text>
-                            </View>
-                          </>
-                        );
-                      }}
-                    /> */}
-                    {/* [
-          {
-            label: 'Health',
-            value: 'Health',
-          },
-          {
-            label: 'Family',
-            value: 'Family',
-          },
-          {
-            label: 'Relationships',
-            value: 'Relationships',
-          },
-          {
-            label: 'Finances',
-            value: 'Finances',
-          },
-          {
-            label: 'Spiritual Growth',
-            value: 'Spiritual Growth',
-          },
-          {
-            label: 'Others',
-            value: 'Others',
-          },
-        ] */}
-                    <InputBox
-                      multiline
-                      label={'Prayer Request'}
-                      placeholder={'Type your prayer request...'}
-                      value={values.password}
-                      errorText={errors.password}
-                      onPress={showPassword => {
-                        this.setState({
-                          showPassword: !this.state.showPassword,
-                        });
-                      }}
-                      showEye={true}
-                      onChangeText={text => {
-                        setFieldValue('password', text);
-                      }}
-                      onFocus={() => setFieldTouched('password')}
-                      onBlur={() => handleBlur('password')}
-                    />
-                    <Note desc={MsgConfig.prayerRequestNote} />
-                  </View>
-                  {/* </KeyboardAvoidingView> */}
-                </ScrollView>
-                <View
-                  style={{
-                    width: '100%',
-                    alignSelf: 'center',
-                  }}>
+                      <InputBox
+                        multiline
+                        label={'Prayer Request'}
+                        placeholder={'Type your prayer request...'}
+                        value={values.prayerDesc}
+                        errorText={errors.prayerDesc}
+                        showEye={true}
+                        onChangeText={text => {
+                          let spceRemove = text.trimStart();
+                          setFieldValue('prayerDesc', spceRemove);
+                        }}
+                        onFocus={() => setFieldTouched('prayerDesc')}
+                        onBlur={() => handleBlur('prayerDesc')}
+                      />
+                      <Note desc={MsgConfig.prayerRequestNote} />
+                    </View>
+                  </ScrollView>
                   <View
                     style={{
-                      width: '90%',
+                      width: '100%',
                       alignSelf: 'center',
                     }}>
-                    <CommonButtonComp
-                      title={'Submit prayer'}
-                      onPress={onPress}
-                      iconLeft
-                      loading={loading}
-                      icon={
-                        <VectorIcon
-                          type={'FontAwesome5'}
-                          name={'pray'}
-                          size={getFontSize(23)}
-                          color={'white'}
-                        />
-                      }
-                    />
+                    <View
+                      style={{
+                        width: '90%',
+                        alignSelf: 'center',
+                      }}>
+                      <CommonButtonComp
+                        title={'Submit prayer'}
+                        onPress={onPress}
+                        iconLeft
+                        loading={loading}
+                        disabled={!(dirty && isValid)}
+                        icon={
+                          <VectorIcon
+                            type={'FontAwesome5'}
+                            name={'pray'}
+                            size={getFontSize(23)}
+                            color={!(dirty && isValid) ? '#cccccc'  :'white'}
+                          />
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
-              </>
-            )}
-          </Formik>
-        </View>
-      </Modal>
+                </>
+              )}
+            </Formik>
+          </View>
+        </Modal>
+      </SafeAreaView>
     </>
   );
 });

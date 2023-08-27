@@ -94,7 +94,7 @@ function InputBox(props) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const pref = React.useRef(null);
-
+  
   const minDate = () => {
     try {
       if (isDob) {
@@ -383,7 +383,6 @@ function InputBox(props) {
               ? keyboardType
               : 'default'
           }
-          // placeholderTextColor={'red'}
           maxLength={countrycodeDropdown ? 10 : maxLength}
           outlineColor={isDarkMode? "grey":outlineColor}
           activeOutlineColor={isDarkMode? theme.color.primary:activeOutlineColor}
@@ -418,8 +417,7 @@ function InputBox(props) {
               onPressOut();
             }
           }}
-          cursorColor={theme.color.primary}
-          // activeUnderlineColor={theme.color.primary}
+          cursorColor={isDarkMode ? theme.color.white:theme.color.primary}
           underlineColor={theme.color.placeholder}
           numberOfLines={10}
           left={
@@ -587,9 +585,7 @@ function InputBox(props) {
             InputMode() == 'flat' && {
               backgroundColor: '#f4f5f6',
               borderBottomWidth: 0,
-            },
-            // style,
-            // getContentSize(),
+            },          
             getTextStyle(),
             multiline && {
               textAlignVertical: 'top',
@@ -609,11 +605,11 @@ function InputBox(props) {
               marginTop: 0,
             },
             {
-                textAlignVertical: 'center',
-                fontSize: getFontSize(15),
+              textAlignVertical: 'center',
+              fontSize: getFontSize(15),
               fontFamily: theme.font.bold,
-              paddingHorizontal: '1.5%',
-              // paddingTop:"5%"
+              paddingHorizontal: '1.5%',          
+              paddingTop:"1.5%"
 
             },
           ]}
@@ -851,10 +847,7 @@ const OTPInputBox = props => {
             },
             {width: getContentSize().width},
             style && style.alignSelf && {alignSelf: style.alignSelf},
-            labelStyle,
-            // inFocused && {
-            //   color: theme.color.secondPrimary,
-            // },
+            labelStyle,          
           ]}>
           {label}
           {mandatory && (
@@ -1001,7 +994,7 @@ const OtpStyle = StyleSheet.create({
     width: SCREENWIDTH / 5,
     height: SCREENWIDTH / 7,
     backgroundColor: theme.color.accent,
-    borderColor: '#C4C4C4',
+    borderColor: theme.color.darkModeTextInputOutline,
     borderWidth: 2,
     borderRadius: 5,
     textAlign: 'center',
