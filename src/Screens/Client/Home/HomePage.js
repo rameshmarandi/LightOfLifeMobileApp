@@ -328,17 +328,10 @@ const YoutubeComp = () => {
 const TabBar = ({tabs, activeIndex, onPress}) => {
   return (
     <View style={{flexDirection: 'row', paddingLeft: '5%', marginTop: '2.5%'}}>
-      {tabs.map((tab, index) => (
-        // <View
-        //   style={{
-        //     // width:'100%',
-        //     marginBottom:"4%",
-        //     // backgroundColor:'red'
-        //   }}>
+      {tabs.map((tab, index) => (      
         <Button
           title={tab.tabTitle}
-          onPress={() => {
-            // LayoutAnimation.easeIneaseOut()
+          onPress={() => {        
             onPress(index);
           }}
           titleStyle={{
@@ -426,21 +419,17 @@ const DailyVerbs = () => {
         renderItem={({item, index}) => (
           <Animated.View
             style={{
-              width:
-                // SCREENWIDTH - 15,
-                // marginHorizontal:10,
+              width:              
                 CARD_WIDTH,
               height: getResHeight(180),
               overflow: 'hidden',
-              marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
-              // transform: [{translateX}],
+              marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,            
             }}>
             <View
               style={{
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                // backgroundColor: item.bg,
                 borderRadius: 10,
                 overflow: 'hidden',
               }}>
@@ -450,28 +439,10 @@ const DailyVerbs = () => {
                 style={{
                   flex: 1,
                   width: '100%',
-                  // height:"100%"
                 }}
               />
             </View>
-            {/* <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: item.bg,
-                borderRadius: 10,
-              
-              }}>
-                <Image
-                source={theme.assets.dailyVerbsBanner}
-                resizeMode='contain'
-                style={{
-                  height:"100%",
-                  width:"90%",
-                }}
-                />
-            </View> */}
+            
           </Animated.View>
         )}
         onMomentumScrollEnd={event => {

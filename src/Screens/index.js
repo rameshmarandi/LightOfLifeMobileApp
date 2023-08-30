@@ -8,6 +8,7 @@ export {default as ChangePassword} from './Admin/Auth/ChangePassword';
 export {default as HomePage} from './Client/Home/HomePage';
 export {default as DrawerItem} from './Client/Drawer/DrawerItem';
 export {default as FreeResource} from './Client/FreeResource';
+export {default as Events} from './Client/Events';
 
 
 export {default as MyProfile} from './Admin/Profile/MyProfile';

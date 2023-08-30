@@ -1,20 +1,15 @@
 import React, {useCallback} from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-} from 'react-native';
+import {View, FlatList, Text} from 'react-native';
 import {Button} from 'react-native-elements';
 import {getFontSize} from '../utility/responsive';
 import {VectorIcon} from './VectorIcon';
 import theme from '../utility/theme';
 import MsgConfig from '../config/MsgConfig';
 import {store} from '../utility/store';
-import { textColorHandler } from './commonHelper';
+import {textColorHandler} from './commonHelper';
 
-const QuickRouteComp = (props) => {
-
-  const {modalVisible} = props
+const QuickRouteComp = props => {
+  const {modalVisible} = props;
   let darkModeStatus = store.getState().auth.isDarkMode;
   let navRoute = [
     {
@@ -47,7 +42,7 @@ const QuickRouteComp = (props) => {
     {
       id: 4,
       lable: MsgConfig.event,
-      route: 'HomePage',
+      route: 'Events',
       icon: (
         <VectorIcon
           type={'MaterialIcons'}
@@ -98,23 +93,22 @@ const QuickRouteComp = (props) => {
       ),
     },
   ];
-  const NavRouteItem = (props) => {
-
-    let {icon, lable, navigation,navRoute ,modalVisible, index} = props
+  const NavRouteItem = props => {
+    let {icon, lable, navigation, navRoute, modalVisible, index} = props;
     let darkModeStatus = store.getState().auth.isDarkMode;
     return (
       <View
         style={{
           margin: 10,
-          alignSelf:"center"
+          alignSelf: 'center',
         }}>
         <Button
           type={'clear'}
           onPress={() => {
-            if(index ==1){
-              modalVisible()
+            if (index == 1) {
+              modalVisible();
             }
-          navigation.navigate(navRoute.route)
+            navigation.navigate(navRoute.route);
           }}
           iconPosition="right"
           icon={
@@ -125,8 +119,8 @@ const QuickRouteComp = (props) => {
                   marginTop: 4,
                   textAlign: 'center',
                   fontSize: getFontSize(10),
-                  color : textColorHandler(),
-                  fontFamily: theme.font.medium
+                  color: textColorHandler(),
+                  fontFamily: theme.font.medium,
                 }}>
                 {lable}
               </Text>
@@ -141,8 +135,10 @@ const QuickRouteComp = (props) => {
               height: 98,
               justifyContent: 'center',
               textAlign: 'center',
-              backgroundColor: darkModeStatus ?theme.color.iconCircleBg : theme.color.iceWhite,
-            
+              backgroundColor: darkModeStatus
+                ? theme.color.iconCircleBg
+                : theme.color.iceWhite,
+
               borderRadius: 100,
             },
           ]}
@@ -158,34 +154,32 @@ const QuickRouteComp = (props) => {
     );
   };
 
-  const renderNavRouteItem = ({item , index}) => (
+  const renderNavRouteItem = ({item, index}) => (
     <NavRouteItem
-     icon={item.icon}
-      modalVisible = {modalVisible} 
-      lable={item.lable} 
-      navRoute = {item}
+      icon={item.icon}
+      modalVisible={modalVisible}
+      lable={item.lable}
+      navRoute={item}
       index={index}
-      {...props} />
+      {...props}
+    />
   );
 
   return (
     <>
-
-  
       <FlatList
         data={navRoute}
         renderItem={renderNavRouteItem}
         keyExtractor={item => item.id.toString()}
         numColumns={3}
         containerStyle={{
-          width:"100%",
-          height:"100%",
-          alignSelf:"center",
-          justifyContent:"center",
-          alignItem:"center"
+          width: '100%',
+          height: '100%',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          alignItem: 'center',
         }}
       />
-  
     </>
   );
 };
