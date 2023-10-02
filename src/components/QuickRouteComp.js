@@ -56,7 +56,7 @@ const QuickRouteComp = props => {
     {
       id: 5,
       lable: MsgConfig.contactWithUs,
-      route: 'HomePage',
+      route: 'ContactWithUs',
       icon: (
         <VectorIcon
           type={'MaterialIcons'}
@@ -69,7 +69,7 @@ const QuickRouteComp = props => {
     {
       id: 6,
       lable: MsgConfig.feedBack,
-      route: 'HomePage',
+      route: 'Feedback',
       icon: (
         <VectorIcon
           type={'MaterialIcons'}

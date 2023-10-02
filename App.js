@@ -9,34 +9,54 @@ import {Provider as MenuProvider} from 'react-native-paper';
 import {store, persistor} from './src/utility/store';
 import theme from './src/utility/theme';
 import {isLoggdIn} from './src/components/commonFunction';
-import FliikNavigation from './src/navigation';
+import RootNavigation from './src/navigation';
 import {getFontSize, getResHeight} from './src/utility/responsive';
-import {CheckDarkMode, getAsyncValue, setAsyncValue} from './src/components/commonHelper';
+import {
+  CheckDarkMode,
+  getAsyncValue,
+  setAsyncValue,
+} from './src/components/commonHelper';
 import {isDarkMode} from './src/features/auth';
 import {scheduleNotification} from './src/components/pushNotificaiton';
-
+import AnimatedLoader from 'react-native-animated-loader';
 // import { firebase } from '@react-native-firebase/app';
 // import messaging from '@react-native-firebase/messaging';
 
 LogBox.ignoreAllLogs(true);
 function AnimatedSlash() {
-
   return (
     <>
       <View
         style={{
           height: getResHeight(250),
           width: '100%',
+          justifyContent:"center",
+          alignItems:"center"
         }}>
-        <Image
+        <AnimatedLoader
+          visible={true}
+          overlayColor={ isDarkMode ? theme.color.darkTheme : 'white'}
+          source={theme.assets.WaveAnimation}
+          animationStyle={{
+            width: '100%',
+            height: getResHeight(350),
+            marginLeft:"-0.2%"
+          }}
+          speed={1}>
+          <Image
           source={theme.assets.church_logo_origianl}
           resizeMode="center"
           style={{
-            height: '100%',
-            width: '100%',
+            height: '50%',
+            width: '50%',
+            position: 'absolute',
+          
+
           }}
         />
-      </View>    
+        </AnimatedLoader>
+        
+      </View>
     </>
   );
 }
@@ -49,7 +69,7 @@ export default class App extends Component {
       isLogedIn: null,
     };
   }
-  
+
   async componentDidMount() {
     // Check Dark theme
     CheckDarkMode();
@@ -60,7 +80,6 @@ export default class App extends Component {
         isLogedIn: userSession,
       });
     }, 1850);
-    
   }
   render() {
     const {isLogedIn} = this.state;
@@ -69,16 +88,11 @@ export default class App extends Component {
     if (isLogedIn != null) {
       return (
         <Provider store={store}>
-          {/* <StatusBar
-            barStyle="light-content"
-            hidden={false}
-            translucent={true}
-            backgroundColor={theme.color.transparent}
-          /> */}
+
           <PersistGate persistor={persistor}>
             <MenuProvider>
               <NavigationContainer>
-                <FliikNavigation isLogedIn={this.state.isLogedIn} />
+                <RootNavigation isLogedIn={this.state.isLogedIn} />
               </NavigationContainer>
             </MenuProvider>
           </PersistGate>
@@ -91,9 +105,7 @@ export default class App extends Component {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: isDarkMode
-            ? theme.color.darkTheme
-            : "white",
+          backgroundColor: isDarkMode ? theme.color.darkTheme : 'white',
         }}>
         <AnimatedSlash />
       </View>

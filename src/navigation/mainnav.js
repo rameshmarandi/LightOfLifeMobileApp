@@ -2,8 +2,8 @@ const {
   createNativeStackNavigator,
   CardStyleInterpolators,
 } = require('@react-navigation/native-stack');
-const {HomePage, FreeResource ,Events} = require('../Screens');
-
+import AllScreens from "../Screens"
+import AuthNavigation from './authnav';
 const MainStack = createNativeStackNavigator();
 
 const forFade = ({current, next}) => {
@@ -34,19 +34,41 @@ export default function MainNavigation(props) {
   return (
     <>
       <MainStack.Screen
-        name="HomePage"
-        initialRouteName={'HomePage'}
-        component={HomePage}
+        name={`HomePage`}
+        initialRouteName={AllScreens.HomePage}
+        component={AllScreens.HomePage}
         options={optinsForScreens()}
       />
       <MainStack.Screen
-        name="FreeResource"
-        component={FreeResource}
+        name={`FreeResource`}
+        component={AllScreens.FreeResource}
+        options={optinsForScreens()}
+      />
+      
+      <MainStack.Screen
+        name={`Events`}
+        component={AllScreens.Events}
         options={optinsForScreens()}
       />
       <MainStack.Screen
-        name="Events"
-        component={Events}
+        name={`ContactWithUs`}
+        component={AllScreens.ContactWithUs}
+        options={optinsForScreens()}
+      />
+      <MainStack.Screen
+        name={`Feedback`}
+        component={AllScreens.Feedback}
+        options={optinsForScreens()}
+      />
+      {/* //Auth Stacs */}
+      <MainStack.Screen
+        name={`Login`}
+        component={AllScreens.Login}
+        options={optinsForScreens()}
+      />
+      <MainStack.Screen
+        name={`Registration`}
+        component={AllScreens.Registration}
         options={optinsForScreens()}
       />
     </>

@@ -3,6 +3,7 @@ import {
   Alert,
   Linking,
   Platform,
+  StatusBar,
   Share,
   View,
   SafeAreaView,
@@ -30,8 +31,9 @@ import {
 import {VectorIcon} from './VectorIcon';
 
 import {Dropdown} from 'react-native-element-dropdown';
-import { store } from '../utility/store';
-  const isDarkMode = store.getState().auth.isDarkMode
+import {store} from '../utility/store';
+import {backgroundColorHandler, textColorHandler} from './commonHelper';
+const isDarkMode = store.getState().auth.isDarkMode;
 
 export const CommonModal = props => {
   const {onClick, isVisible, renderUi, loading} = props;
@@ -87,6 +89,7 @@ export const CommonButton = props => {
           fontSize: getFontSize(14),
           fontFamily: theme.font.semiBold,
           fontWeight: 600,
+          color:theme.color.primary
         },
         titleStyle,
       ]}
@@ -104,9 +107,10 @@ export const CommonButton = props => {
           width: '100%',
           height: '100%',
           borderRadius: getResWidth(8),
-          backgroundColor: backgroundColor
-            ? backgroundColor
-            : theme.color.seletedBtn,
+          backgroundColor:'white'
+          //  backgroundColor
+          //   ? backgroundColor
+          //   : theme.color.seletedBtn,
         },
         buttonStyle,
       ]}
@@ -114,8 +118,53 @@ export const CommonButton = props => {
     />
   );
 };
+export const StatusBarComp = () => {
+  return (
+    <StatusBar
+      animated={true}
+      backgroundColor={backgroundColorHandler()}
+      barStyle={'light-content'}
+    />
+  );
+};
+export const HyperTxt = props => {
+  const {text, hyperText, onPress} = props;
+  return (
+    <>
+      <View
+        style={{
+          paddingHorizontal: '5%',
+          marginTop: '5%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}>
+        <Text
+          style={{
+              color:'white',
+            fontSize: getFontSize(12),
+            fontFamily: theme.font.regular,
+          }}>
+          {text}
+        </Text>
+        <TouchableOpacity onPress={onPress}>
+          <Text
+            style={{
+              color:'white',
+              fontSize: getFontSize(13),
+              fontFamily: theme.font.bold,
+              marginLeft: '5%',
+              textDecorationLine: 'underline',
+            }}>
+            {hyperText}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </>
+  );
+};
 export const Note = props => {
-  const isDarkMode = store.getState().auth.isDarkMode
+  const isDarkMode = store.getState().auth.isDarkMode;
   return (
     <View
       style={{
@@ -130,7 +179,7 @@ export const Note = props => {
         style={[
           styles.noticeStyle,
           {
-            color:"white",
+            color: 'white',
             // color:isDarkMode ? theme.color.white: 'black',
             fontWeight: '800',
           },
@@ -149,46 +198,102 @@ export const Note = props => {
     </View>
   );
 };
-export const DropdownComp = (props) => {
-  const {dropdownData ,placeholder, value ,onChange}  = props
-    const isDarkMode = store.getState().auth.isDarkMode
+export const DropdownComp = props => {
+  const {
+    dropdownData,
+    dropDownPlaceholder,
+    placeholder,
+    mandatory,
+    lableName,
+    value,
+    onChange,
+  } = props;
+  const isDarkMode = store.getState().auth.isDarkMode;
 
   return (
     <>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Text
+          style={{
+            color: '#666666',
+            marginTop: '2.5%',
+            paddingVertical: '2%',
+            fontFamily: theme.font.Helvetica,
+            fontSize: getFontSize(13),
+            fontWeight: '700',
+          }}>
+          {lableName} {''}
+        </Text>
+        {mandatory && (
+          <Text
+            style={{
+              color: 'red',
+              marginTop: '3%',
+            }}>
+            *
+          </Text>
+        )}
+      </View>
       <Dropdown
         data={dropdownData}
         maxHeight={getResHeight(250)}
         labelField="label"
         valueField="value"
-        placeholder={placeholder}
+        placeholder={dropDownPlaceholder ? dropDownPlaceholder : 'Select Item'}
         value={value}
         onChange={onChange}
-        style={[styles.dropdown,{
-          backgroundColor:isDarkMode ? theme.color.darkTheme: theme.color.white,
-          borderColor:isDarkMode ?theme.color.darkModeTextInputOutline :theme.color.normalModeTextInputOutline,          
-        }]}
-        placeholderStyle={[styles.placeholderStyle , {
-          color:  isDarkMode ?  theme.color.white: theme.color.normalModeTextInputOutline,
-          
-        }]}
-        selectedTextStyle={[styles.selectedTextStyle , {
-          color:  isDarkMode ?  theme.color.white: theme.color.primary,
-        }]}
+        style={[
+          styles.dropdown,
+          {
+            backgroundColor: isDarkMode
+              ? theme.color.darkTheme
+              : theme.color.white,
+            borderColor: isDarkMode
+              ? theme.color.darkModeTextInputOutline
+              : theme.color.normalModeTextInputOutline,
+          },
+        ]}
+        placeholderStyle={[
+          styles.placeholderStyle,
+          {
+            color: isDarkMode
+              ? theme.color.white
+              : theme.color.normalModeTextInputOutline,
+          },
+        ]}
+        selectedTextStyle={[
+          styles.selectedTextStyle,
+          {
+            color: isDarkMode ? theme.color.white : theme.color.primary,
+          },
+        ]}
         inputSearchStyle={styles.inputSearchStyle}
-        containerStyle = {styles.containerStyle}
+        containerStyle={styles.containerStyle}
         iconStyle={styles.iconStyle}
-        itemContainerStyle = {{
-          color :isDarkMode ? theme.color.darkTheme: theme.color.white,
-          backgroundColor:isDarkMode ? theme.color.darkTheme: theme.color.white,
-          borderColor: isDarkMode ? '#666666':'#666666',  
+        itemContainerStyle={{
+          color: isDarkMode ? theme.color.darkTheme : theme.color.white,
+          backgroundColor: isDarkMode
+            ? theme.color.darkTheme
+            : theme.color.white,
+          borderColor: isDarkMode ? '#666666' : '#666666',
         }}
         renderItem={item => {
           return (
             <>
               <View style={styles.item}>
-                <Text style={[styles.textItem,{
-                  color:theme.color.primary
-                }]}>{item.label}</Text>
+                <Text
+                  style={[
+                    styles.textItem,
+                    {
+                      color: theme.color.primary,
+                    },
+                  ]}>
+                  {item.label}
+                </Text>
               </View>
             </>
           );
@@ -275,7 +380,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: getResHeight(45),
   },
-   //Dropdown imle
+  //Dropdown imle
   lableStyle: {
     fontSize: getFontSize(12),
     fontWeight: '600',
@@ -283,12 +388,11 @@ const styles = StyleSheet.create({
     color: '#666666',
   },
   dropdown: {
-    borderWidth: 1,        
+    borderWidth: 1,
     width: '100%',
-    height: 50,    
+    height: 50,
     borderRadius: 10,
     paddingHorizontal: '5%',
-    
   },
   icon: {
     marginRight: 5,
@@ -298,26 +402,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  
   },
   textItem: {
     flex: 1,
     fontSize: 16,
-    // color:
-    // isDarkMode ? "white":theme.color.darkTheme
   },
   placeholderStyle: {
     fontSize: 16,
-    color:isDarkMode  ? '#ffffff':theme.color.darkTheme
+    color: isDarkMode ? '#ffffff' : theme.color.darkTheme,
   },
   selectedTextStyle: {
     fontSize: 16,
-    color:isDarkMode ? "green":theme.color.darkTheme
+    color: isDarkMode ? 'green' : theme.color.darkTheme,
   },
-  containerStyle : {
-    borderRadius:10,
-    // backgroundColor:"red"
-    backgroundColor:isDarkMode ? theme.color.darkTheme : "white"  
+  containerStyle: {
+    borderRadius: 10,
+    backgroundColor: isDarkMode ? theme.color.darkTheme : 'white',
   },
   iconStyle: {
     width: 20,
@@ -326,6 +426,6 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 20,
     fontSize: 16,
-    backgroundColor:theme.color.darkTheme
+    backgroundColor: theme.color.darkTheme,
   },
 });

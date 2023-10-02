@@ -176,7 +176,7 @@ const Events = props => {
                         style={{
                           width: 80,
                           height: 80,
-                          backgroundColor: 'green',
+                          // backgroundColor: 'green',
                           borderRadius: 10,
                         }}
                       />

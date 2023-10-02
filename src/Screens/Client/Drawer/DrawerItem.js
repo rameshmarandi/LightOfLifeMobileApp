@@ -30,7 +30,7 @@ import {
 import MsgConfig from '../../../config/MsgConfig';
 import {store} from '../../../utility/store';
 import {isDarkMode} from '../../../features/auth';
-import { CommonButtonComp } from '../../../components/commonComp';
+import {CommonButtonComp} from '../../../components/commonComp';
 
 class DrawerItem extends Component {
   constructor(props) {
@@ -145,7 +145,7 @@ class DrawerItem extends Component {
       {
         id: 4,
         lable: MsgConfig.event,
-        route: 'HomePage',
+        route: 'Events',
         icon: (
           <VectorIcon
             type={'MaterialIcons'}
@@ -159,7 +159,7 @@ class DrawerItem extends Component {
       {
         id: 5,
         lable: MsgConfig.contactWithUs,
-        route: 'HomePage',
+        route: 'ContactWithUs',
         icon: (
           <VectorIcon
             type={'MaterialIcons'}
@@ -172,7 +172,7 @@ class DrawerItem extends Component {
       {
         id: 6,
         lable: MsgConfig.feedBack,
-        route: 'HomePage',
+        route: 'Feedback',
         icon: (
           <VectorIcon
             type={'MaterialIcons'}
@@ -268,7 +268,7 @@ class DrawerItem extends Component {
           </View>
         </View>
 
-          <View
+        <View
           style={{
             width: '90%',
             alignSelf: 'center',
@@ -278,13 +278,13 @@ class DrawerItem extends Component {
           <CommonButtonComp
             title={'Are you a member?'}
             onPress={() => {
-              // navigation.navigate("Login")
+              navigation.navigate("Login")
               // navigation.closeDrawer();
             }}
             iconLeft
             // loading = {true}
             icon={
-            <VectorIcon
+              <VectorIcon
                 type={'FontAwesome'}
                 name={'lock'}
                 size={getFontSize(23)}
@@ -292,8 +292,7 @@ class DrawerItem extends Component {
               />
             }
           />
-          
-        </View>      
+        </View>
       </SafeAreaView>
     );
   }

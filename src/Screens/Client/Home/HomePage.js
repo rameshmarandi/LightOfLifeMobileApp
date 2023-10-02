@@ -38,7 +38,7 @@ import YoutubePlayer from 'react-native-youtube-iframe';
 import * as Animatable from 'react-native-animatable';
 import {TabView, SceneMap} from 'react-native-tab-view';
 import {Dropdown} from 'react-native-element-dropdown';
-
+import MarqueeView from 'react-native-marquee-view';
 import {
   SCREENWIDTH,
   SCREENHEIGHT,
@@ -52,7 +52,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {Button} from 'react-native-elements';
 import GoogleMapComp from '../../../components/GoogleMapComp';
 import QuickRouteComp from '../../../components/QuickRouteComp';
-import {CommonButtonComp, CommonModal} from '../../../components/commonComp';
+import {CommonButtonComp, CommonModal, StatusBarComp, } from '../../../components/commonComp';
 import {VectorIcon} from '../../../components/VectorIcon';
 import InputBox from '../../../components/InputBox';
 import PrayerRequest from '../PrayerRequest';
@@ -123,6 +123,7 @@ class HomePage extends Component {
           flex: 1,
           backgroundColor: backgroundColorHandler(),
         }}>
+          <StatusBarComp/>
         <View>
           <CustomHeader
             Hamburger={() => {
@@ -130,6 +131,22 @@ class HomePage extends Component {
             }}
             centerLogo={true}
           />
+          <MarqueeView
+            style={{
+              backgroundColor :theme.color.iceWhite,
+              width: '100%',
+            }}>
+            <View style={{}}>
+              <Text
+                style={{
+                  fontSize: getFontSize(15),
+                  fontFamily: theme.font.semiBold,
+                  color: theme.color.error,
+                }}>
+                Welcome to Light of Life Ministries , Pune
+              </Text>
+            </View>
+          </MarqueeView>
           <PrayerRequest
             isVisible={this.state.isVisible}
             onClick={() => {
@@ -328,10 +345,10 @@ const YoutubeComp = () => {
 const TabBar = ({tabs, activeIndex, onPress}) => {
   return (
     <View style={{flexDirection: 'row', paddingLeft: '5%', marginTop: '2.5%'}}>
-      {tabs.map((tab, index) => (      
+      {tabs.map((tab, index) => (
         <Button
           title={tab.tabTitle}
-          onPress={() => {        
+          onPress={() => {
             onPress(index);
           }}
           titleStyle={{
@@ -419,11 +436,10 @@ const DailyVerbs = () => {
         renderItem={({item, index}) => (
           <Animated.View
             style={{
-              width:              
-                CARD_WIDTH,
+              width: CARD_WIDTH,
               height: getResHeight(180),
               overflow: 'hidden',
-              marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,            
+              marginHorizontal: (SCREEN_WIDTH - CARD_WIDTH) / 2,
             }}>
             <View
               style={{
@@ -442,7 +458,6 @@ const DailyVerbs = () => {
                 }}
               />
             </View>
-            
           </Animated.View>
         )}
         onMomentumScrollEnd={event => {

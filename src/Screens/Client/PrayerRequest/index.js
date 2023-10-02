@@ -60,6 +60,7 @@ import {
 } from '../../../components/commonComp';
 import {VectorIcon} from '../../../components/VectorIcon';
 import InputBox from '../../../components/InputBox';
+import validation from '../../../utility/theme/validation';
 
 const PrayerRequest = React.memo(props => {
   const {loading, isVisible, onClick, onPress} = props;
@@ -86,10 +87,10 @@ const PrayerRequest = React.memo(props => {
             <Formik
               validationSchema={theme.validationSchema.prayerRequest}
               initialValues={{
-                name:"",
-                email:"",
+                name: '',
+                email: '',
                 prayerCategory: '',
-                prayerDesc : ""
+                prayerDesc: '',
               }}
               onSubmit={async () => {}}>
               {({
@@ -120,49 +121,51 @@ const PrayerRequest = React.memo(props => {
                         paddingBottom: '20%',
                       }}>
                       <InputBox
-                        label={'Name (Optional):'}
+                        mandatory
+                        label={'Name'}
                         placeholder={'Enter your name'}
                         value={values.name}
                         errorText={errors.name}
                         autoCapitalize="none"
                         onChangeText={text => {
-                          let spceRemove = text.trimStart();
-                          setFieldValue(
-                            'name',
-                            spceRemove.replace(
-                              /[`~!#$%^&*()_|+\-=?;:'",<>\{\}\[\]\\\/]/gi,
-                              '',
-                            ),
-                          );
+                          setFieldValue('name', validation.OnlyCharacter(text));
                         }}
                         onFocus={() => setFieldTouched('name')}
                         onBlur={() => handleBlur('name')}
                       />
                       <InputBox
-                        label={'Email (Optional):'}
+                        mandatory
+                        label={'Mobile'}
+                        maxLength={10}
+                        placeholder={'Enter mobile'}
+                        keyboardType={'numeric'}
+                        value={values.mobile}
+                        errorText={errors.mobile}
+                        onChangeText={text => {
+                          setFieldValue('mobile', validation.OnlyNumber(text));
+                        }}
+                        onFocus={() => setFieldTouched('mobile')}
+                        onBlur={() => handleBlur('mobile')}
+                      />
+                      <InputBox
+                        label={'Email'}
                         placeholder={'Enter Email'}
                         keyboardType={'email-address'}
                         value={values.email}
                         errorText={errors.email}
                         onChangeText={text => {
-                          let spceRemove = text.trimStart();
-                          setFieldValue('email', spceRemove);
+                          setFieldValue(
+                            'email',
+                            validation.ValidateEmail(text),
+                          );
                         }}
                         onFocus={() => setFieldTouched('email')}
                         onBlur={() => handleBlur('email')}
                       />
-                      <Text
-                        style={{
-                          color: '#666666',
-                          paddingBottom: '2%',
-                          fontFamily: theme.font.Helvetica,
-                          fontSize: getFontSize(13),
-                          fontWeight: '700',
-                        }}>
-                        Prayer Category
-                      </Text>
+                      
 
                       <DropdownComp
+                         mandatory
                         dropdownData={[
                           {
                             label: 'Health',
@@ -189,6 +192,8 @@ const PrayerRequest = React.memo(props => {
                             value: 'Others',
                           },
                         ]}
+                        lableName={"Prayer Category"}
+                        dropDownPlaceholder= {"Select prayer category"}
                         vlaue={prayerCate}
                         onChange={item => {
                           setPrayerCate(item.vlaue);
@@ -197,6 +202,7 @@ const PrayerRequest = React.memo(props => {
 
                       <InputBox
                         multiline
+                        mandatory
                         label={'Prayer Request'}
                         placeholder={'Type your prayer request...'}
                         value={values.prayerDesc}
@@ -233,7 +239,7 @@ const PrayerRequest = React.memo(props => {
                             type={'FontAwesome5'}
                             name={'pray'}
                             size={getFontSize(23)}
-                            color={!(dirty && isValid) ? '#cccccc'  :'white'}
+                            color={!(dirty && isValid) ? '#cccccc' : 'white'}
                           />
                         }
                       />

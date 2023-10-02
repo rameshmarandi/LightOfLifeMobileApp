@@ -12,13 +12,13 @@ import {
 } from '../../utility/responsive';
 import theme from '../../utility/theme';
 import {VectorIcon} from '../../components/VectorIcon';
-import {
-  HomePage,
-  MyProfile,
-  AddProduct,
-  MyCards,
-  MyInsights,
-} from '../../Screens';
+// import {
+//   HomePage,
+//   MyProfile,
+//   AddProduct,
+//   MyCards,
+//   MyInsights,
+// } from '../../Screens';
 import {Button} from 'react-native-elements';
 import {store} from '../../utility/store';
 import {tabActive} from '../../features/auth';

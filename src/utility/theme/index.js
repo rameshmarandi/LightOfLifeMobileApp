@@ -30,14 +30,13 @@ const regex = {
 const color = {
   primary:
     '#2F3B75', // ok //F99D27
-  darkTheme:"#000f0b",
-  secondary: '#E66EA7',
-  iconCircleBg: '#343434',
+  darkTheme:'#012537',
+  // "#000f0b",
+  iconCircleBg:'#011621',
+  //  '#343434',
   //Textinput start
   darkModeTextInputOutline : '#666666',
   normalModeTextInputOutline: '#C4C4C4',
-  // '#C4C4C4',
-
   // Textinput end
   seletedBtn: '#303254',
   disabledBtn: '#434e82',

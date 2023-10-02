@@ -1,306 +1,248 @@
 import React, {Component} from 'react';
 import {
   View,
+  Image,
   Text,
-  BackHandler,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
+  StatusBar,
+  ImageBackground,
   Platform,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {SafeAreaView} from 'react-native';
-import {Image} from 'react-native';
-import {Formik} from 'formik';
-
 import theme from '../../../utility/theme';
+import assets from '../../../utility/theme/assets';
 import {
   hp,
   getFontSize,
+  SCREENHEIGHT,
+  SCREENWIDTH,
   wp,
   getResHeight,
   getResWidth,
 } from '../../../utility/responsive';
-import InputBox, {OTPInputBox} from '../../../components/InputBox';
+import InputBox from '../../../components/InputBox';
+
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'react-native';
 import {
   BannerHeader,
   CommonAlertModal,
   CommonButton,
-  Texta,
+  HyperTxt,
 } from '../../../components/commonComp';
+import LoginWithGoggle from '../../../components/LoginWithGoggle';
 // import NavigationBar from '../../../navigation/navHeader';
-import {HyperTxt} from '../../../components/commonHelper';
-import assets from '../../../utility/theme/assets';
-import {RegisterNewUserAPI} from '../../../apis/authRepo';
-
+import {LoginAPI} from '../../../apis/authRepo';
+import AnimatedLoader from 'react-native-animated-loader';
+import {backgroundColorHandler} from '../../../components/commonHelper';
 class Registration extends Component {
   constructor(props) {
     super(props);
-    // props.navigation.setOptions(
-    //   NavigationBar({
-    //     navigation: props.navigation,
-    //     headerTransparent: true,
-    //     // logoProps: {},
-    //   }),
-    // );
     this.state = {
-      otpVisible: false,
+      showPassword: false,
       alertModal: false,
       alerText: '',
     };
   }
-  componentDidMount() {
-    }
+  componentDidMount() {}
   render() {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: theme.color.white,
         }}>
-        <Image
-          source={assets.Rectanglee}
-          style={{
-            width: '100%',
-            height: hp(35),
-            position: 'absolute',
-          }}
+        <StatusBar
+          animated={true}
+          backgroundColor={backgroundColorHandler()}
+          barStyle={'light-content'}
         />
-        <SafeAreaView
+
+        <ImageBackground
+          source={{uri: 'https://image.lexica.art/full_jpg/c54ff322-4f23-4cf4-82d8-2fa693cfd7fb'}}
+          resizeMode="cover"
           style={{
-            flex: 1,
+            width: SCREENWIDTH,
+            height: SCREENHEIGHT
           }}>
-          <CommonAlertModal
-            isVisible={this.state.alertModal}
-            alertTitle={this.state.alerText}
-            removeBtn
-            onRequestClose={() => {
-              this.setState({alertModal: false});
-            }}
-            onClick={() => {
-              this.setState({alertModal: false});
-            }}
-            {...this.props}
+            <View style={{
+              position:"absolute",
+              top:0,
+              width: SCREENWIDTH,
+             height: SCREENHEIGHT,
+            //  opacity:0.5,
+              backgroundColor:'rgba(0,0,0,0.7)'
+            }}></View>
+          <Image          
+          source = {theme.assets.church_logo}
+          resizeMode='cover'
+          style={{
+            height: getResHeight(220),
+            width:"100%",
+            alignSelf:"center",
+            marginTop:"15%"
+          }}
           />
-          <KeyboardAvoidingView
-            behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-            style={{flex: 1}}
-            keyboardVerticalOffset={Platform.OS == 'ios' ? hp(0) : hp(-50)}>
-            <View
-              style={{
-                flex: 1,
-              }}>
-              <View
-                style={[
-                  {
-                    width: '100%',
-                    height: Platform.OS == 'android' ? hp(35) : hp(23.5),
-                    paddingHorizontal: '5%',
-                    paddingBottom: getResHeight(20),
-                    justifyContent: 'space-between',
-                  },
-                  Platform.OS === 'android' && {
-                    paddingTop: hp(8.5),
-                  },
-                ]}>
-                {/* <Image
-                  source={assets.FliickLogo}
-                  resizeMode="contain"
+        <View
+          style={
+            {
+            zIndex:99999
+            }
+          }>
+          <Formik
+            validationSchema={theme.validationSchema.login}
+            initialValues={{
+              email: '',
+              password: '',
+            }}
+            onSubmit={async () => {}}>
+            {({
+              values,
+              isValid,
+              dirty,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              setFieldValue,
+              setFieldTouched,
+            }) => (
+            <>
+                <View
                   style={{
-                    width: getResWidth(88),
-                    height: getResHeight(30),
-                    marginLeft: getResWidth(-5),
+                    width: '90%',
+                    alignSelf: 'center',
+                    paddingTop: getResHeight(10),
+                  }}>
+                  <InputBox
+                    label={'Email'}
+                    placeholder={'Enter Email'}
+                    keyboardType={'email-address'}
+                    value={values.email}
+                    errorText={errors.email}
+                    onChangeText={text => setFieldValue('email', text)}
+                    onFocus={() => setFieldTouched('email')}
+                    onBlur={() => handleBlur('email')}
+                  />
+                  <InputBox
+                    secureTextEntry={true}
+                    label={'Password'}
+                    placeholder={'Enter Password'}
+                    value={values.password}
+                    errorText={errors.password}
+                    onPress={showPassword => {
+                      this.setState({
+                        showPassword: !this.state.showPassword,
+                      });
+                    }}
+                    showEye={true}
+                    onChangeText={text => {
+                      setFieldValue('password', text);
+                    }}
+                    onFocus={() => setFieldTouched('password')}
+                    onBlur={() => handleBlur('password')}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      alignSelf: 'flex-end',
+                      marginRight: getResWidth(2),
+                      marginTop: getResHeight(5),
+                    }}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontFamily: theme.font.medium,
+                        fontSize: getFontSize(14),
+                      }}
+                      onPress={() => {
+                        this.props.navigation.navigate('ForgotPassword');
+                      }}>
+                      Forgot Password
+                    </Text>
+                  </TouchableOpacity>
+
+                  <CommonButton
+                    title="Login"
+                    // disabled={!(dirty && isValid)}
+                    onPress={async () => {
+                      
+                    }}
+                    isLoading={this.state.isLoading}
+                    containerStyle={{
+                      marginTop: getResHeight(20),
+                    }}
+                  />
+                </View>
+                {/* <LoginWithGoggle
+                  title={'Login With Google'}
+                  onPress={async () => {
+                    // try {
+                    //   await GoogleSignin.signOut();
+                    //   await GoogleSignin.hasPlayServices();
+                    //   const userInfo = await GoogleSignin.signIn();
+                    //   // console.tron.log("userInfo", userInfo)
+                    //   const payload = {
+                    //     email: `${userInfo.user.email}`,
+                    //     firstname: `${userInfo.user.givenName}`,
+                    //     lastname: `${userInfo.user.familyName}`,
+                    //   };
+                    //   this.setState({isLoading: true});
+                    //   const res = await this.props.loginWithGoogleThunk(
+                    //     payload,
+                    //   );
+                    //   if (res.payload == true) {
+                    //     await setUserSession(true);
+                    //     const getEnquiry = await getEnquirySession();
+                    //     if (getEnquiry == true) {
+                    //       this.props.navigation.navigate('HomePage');
+                    //     } else {
+                    //       this.props.navigation.navigate('Enquiry');
+                    //     }
+                    //   } else {
+                    //     if (res.payload == NotRegistered) {
+                    //       this.setState({alerText: res.payload});
+                    //       this.setState({alertModal: true});
+                    //     } else {
+                    //       this.setState({alerText: res.payload});
+                    //       this.setState({alertModal: true});
+                    //     }
+                    //   }
+                    //   this.setState({isLoading: false});
+                    // } catch (err) {
+                    //   // console.tron.log('Login With google Error', err);
+                    // }
                   }}
                 /> */}
-                <BannerHeader
-                  title={'Register'}
-                  descp={'Create your account'}
+                <HyperTxt
+                  text={"Already have account?"}
+                  hyperText={'Login'}
+                  onPress={() => {
+                    this.props.navigation.navigate('Login');
+                  }}
+                  style={{
+                    width: '90%',
+                    textAlign: 'center',
+                    alignSelf: 'center',
+                    marginTop: getResHeight(20),
+                  }}
                 />
-              </View>
-              <Formik
-                validationSchema={theme.validationSchema.registerUser}
-                initialValues={{
-                  firstName: 'Ramesh',
-                  lastName: 'Marandi',
-                  email: 'ramesh@gmail.com',
-                  password: '123',
-                }}
-                onSubmit={() => {
-                  console.tron.log('values.', values);
-                  // this.props.navigation.navigate('RegisterCompny');
-                }}>
-                {({
-                  values,
-                  isValid,
-                  dirty,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  setFieldValue,
-                  setFieldTouched,
-                }) => (
-                  <ScrollView
-                    style={{
-                      flex: 1,
-                    }}>
-                    <View
-                      style={{
-                        width: '90%',
-                        alignSelf: 'center',
-                        paddingTop: '5%',
-                      }}>
-                      <InputBox
-                        label={'First Name'}
-                        placeholder={'Enter first name'}
-                        placeholderTextColor={'#000000'}
-                        value={values.firstName}
-                        errorText={errors.firstName}
-                        onChangeText={handleChange('firstName')}
-                        onFocus={() => setFieldTouched('firstName')}
-                        onBlur={() => handleBlur('firstName')}
-                        style={{backgroundColor: '#FFFFFF'}}
-                      />
-                      <InputBox
-                        label={'Last Name'}
-                        placeholder={'Enter last name'}
-                        placeholderTextColor={'#C0C0C0'}
-                        value={values.lastName}
-                        errorText={errors.lastName}
-                        onChangeText={handleChange('lastName')}
-                        onFocus={() => setFieldTouched('lastName')}
-                        onBlur={() => handleBlur('lastName')}
-                        style={{backgroundColor: '#FFFFFF'}}
-                      />                    
-                      <InputBox
-                        label={'Email Address'}
-                        placeholder={'Enter your email address'}
-                        keyboardType={'email-address'}
-                        placeholderTextColor={'#C0C0C0'}
-                        value={values.email}
-                        errorText={errors.email}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('email')}
-                        onFocus={() => setFieldTouched('email')}
-                        onBlur={() => handleBlur('email')}
-                        style={{backgroundColor: '#FFFFFF'}}
-                        rightIcon={
-                          <TouchableOpacity
-                            disabled={
-                              values.firstName == '' ||
-                              values.lastName == '' ||
-                              values.email == ''
-                            }
-                            onPress={async () => {
-                              this.setState({alertModal: true});
-                              this.setState({
-                                otpVisible: !this.state.otpVisible,
-                              });
-                            }}>
-                            <Text
-                              style={{
-                                fontFamily: theme.font.bold,
-                                fontSize: getFontSize(11.2),
-                                color: theme.color.primary,
-                                padding: '5%',
-                                textAlign: 'center',
-                              }}>
-                              Send OTP
-                            </Text>
-                          </TouchableOpacity>
-                        }
-                      />
-
-                      {/* {this.state.otpVisible && (
-                        <OTPInputBox
-                          label="Verify OTP"
-                          count={4}
-                          boxSize={wp(12)}
-                          onChangeText={handleChange('otp')}
-                          value={this.state.otp}
-                          style={{
-                            width: '100%',
-                            marginTop: getResHeight(10),
-                          }}
-                          inputStyle={{
-                            marginRight: '8%',
-                            borderWidth: 2,
-                            borderRadius: 10,
-                          }}
-                        />
-                      )} */}
-
-                      <InputBox
-                        outline
-                        label={'Enter password'}
-                        placeholder={'Enter your password'}
-                        placeholderTextColor={'#C0C0C0'}
-                        value={values.password}
-                        errorText={errors.password}
-                        onChangeText={handleChange('password')}
-                        onFocus={() => setFieldTouched('password')}
-                        onBlur={() => handleBlur('password')}
-                        style={{backgroundColor: '#FFFFFF'}}
-                      />
-                      <CommonButton
-                        title="Next"
-                        // disabled={!(dirty && isValid)}
-                        onPress={async () => {
-                          this.setState({isLoading: true}, async () => {
-                            const res = await this.props.RegisterNewUserAPI(
-                              values,
-                            );
-                            if (res.payload == 200) {
-                              alert('Registration Successfully');
-                              this.props.navigation.navigate('Login');
-                            } else {                              
-                              this.setState({alerText: res.payload.message});
-                              this.setState({alertModal: true});
-                            }
-                            this.setState({isLoading: false});
-                          });
-                        }}
-                        isLoading={this.state.isLoading}
-                        containerStyle={{
-                          marginTop: getResHeight(20),
-                        }}
-                      />
-                      <HyperTxt
-                        text={'Already have an Account? Log in'}
-                        hyperText={'Log in'}
-                        hypertxtUnderline
-                        onPress={() => {
-                          this.props.navigation.navigate('Login');
-                        }}
-                        style={{
-                          width: '90%',
-                          textAlign: 'center',
-                          alignSelf: 'center',
-                          marginTop: getResHeight(20),
-                        }}
-                      />
-                    </View>
-                  </ScrollView>
-                )}
-              </Formik>
-            </View>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-      </View>
+            
+          </>  )}
+          </Formik>
+        </View>
+        </ImageBackground>
+      </SafeAreaView>
     );
   }
 }
 
-const mapStateToProps = (props, state) => {
-  return {};
-};
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => {
-  return {
-    RegisterNewUserAPI: payload => dispatch(RegisterNewUserAPI(payload)),
-  };
+  return {};
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(Registration);

@@ -1,11 +1,6 @@
 const {createNativeStackNavigator} = require('@react-navigation/native-stack');
-const {
-  Login,
-  Registration,
-  ChangePassword,
-  ForgotPassword,
-} = require('../Screens');
 
+import AllScreens from "../Screens"
 const AuthStack = createNativeStackNavigator();
 
 export default function AuthNavigation(props) {
@@ -14,28 +9,28 @@ export default function AuthNavigation(props) {
       <AuthStack.Screen
         name="Login"
         initialRouteName={'Login'}
-        component={Login}
+        component={AllScreens.Login}
         options={{
           animationEnabled: true,
         }}
       />
       <AuthStack.Screen
         name="Registration"
-        component={Registration}
+        component={AllScreens.Registration}
         options={{
           animationEnabled: true,
         }}
       />
             <AuthStack.Screen
         name="ChangePassword"
-        component={ChangePassword}
+        component={AllScreens.ChangePassword}
         options={{
           animationEnabled: true,
         }}
       />
       <AuthStack.Screen
         name="ForgotPassword"
-        component={ForgotPassword}
+        component={AllScreens.ForgotPassword}
         options={{
           animationEnabled: true,
         }}

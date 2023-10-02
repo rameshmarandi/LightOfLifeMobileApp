@@ -1,11 +1,11 @@
 import * as Yup from 'yup';
 
-
 //New Validation START
 const prayerRequest = Yup.object().shape({
-    name: Yup.string().required('Please enter your user name'),
-    email: Yup.string().email('Please enter valid email').required('Please enter valid email'),
-
+  name: Yup.string().required('Please enter your name'),
+  email: Yup.string()
+    .email('Please enter valid email')
+    .required('Please enter valid email'),
 });
 
 //New Validation END
@@ -119,11 +119,44 @@ const register = Yup.object().shape({
     ),
 });
 
-export default validation = {
+// Input filed validation
 
+const OnlyCharacter = text => {
+  let enterText = text.trim(); 
+  enterText = enterText.replace(/\s+/g, ' '); // Removing all the extra space, it allow only one space between two words
+  enterText = enterText.replace(/[^a-zA-Z ]/g, ''); // Remove all special characters
+
+  return enterText;
+};
+const OnlyNumber = text => {
+  let enterText = text.trim(); // Remove leading and trailing spaces
+  enterText = enterText.replace(/\s+/g, ' '); // Removing all the extra space, it allow only one space between two words
+   enterText = enterText.replace(/[^0-9]/g, ''); // Accept only number, remove the character & spceial letter
+
+  return enterText;
+};
+
+const ValidateEmail = email => {
+  let trimmedEmail = email.trim(); // Remove leading and trailing spaces
+  trimmedEmail = trimmedEmail.replace(/\s+/g, ''); // Removing all spaces
+
+  // Use a regular expression to check if the email contains only allowed characters
+  const isValid = /^[A-Za-z0-9@]+$/.test(trimmedEmail);
+
+  return isValid ? trimmedEmail : null; // Return the trimmed email or null if it's not valid
+};
+
+export default validation = {
   //New validation START
   prayerRequest,
+
+  // Input field validation
+
+  OnlyCharacter,
+  OnlyNumber,
+  ValidateEmail,
   //New validation END
+
   login,
   registerUser,
   registerCompny,

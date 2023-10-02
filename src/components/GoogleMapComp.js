@@ -66,6 +66,7 @@ const GoogleUIComp = () => {
             </>
           )}
         </Marker>
+    
       </MapView>
     </>
   );

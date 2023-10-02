@@ -305,7 +305,7 @@ function InputBox(props) {
           {mandatory && (
             <Text
               style={{
-                color: theme.color.alert,
+                color: "red",
               }}>
               {' '}
               *
@@ -384,8 +384,8 @@ function InputBox(props) {
               : 'default'
           }
           maxLength={countrycodeDropdown ? 10 : maxLength}
-          outlineColor={isDarkMode? "grey":outlineColor}
-          activeOutlineColor={isDarkMode? theme.color.primary:activeOutlineColor}
+          outlineColor={outlineColor ? outlineColor : isDarkMode? "grey":outlineColor}
+          activeOutlineColor={activeOutlineColor ?activeOutlineColor : isDarkMode? theme.color.primary:activeOutlineColor}
           // disabled={disabled}
           theme={{
             colors: {
