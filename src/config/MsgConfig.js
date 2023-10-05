@@ -1,6 +1,7 @@
 
 const DrawerMenu = {
   home:"Home",
+  myProfile :"My Profile",
   freeResource:"Free Resources",
   prayerRequest:"Prayer Request",
   event:"Events",

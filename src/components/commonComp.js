@@ -89,7 +89,7 @@ export const CommonButton = props => {
           fontSize: getFontSize(14),
           fontFamily: theme.font.semiBold,
           fontWeight: 600,
-          color:theme.color.primary
+          color: theme.color.primary,
         },
         titleStyle,
       ]}
@@ -107,7 +107,7 @@ export const CommonButton = props => {
           width: '100%',
           height: '100%',
           borderRadius: getResWidth(8),
-          backgroundColor:'white'
+          backgroundColor: 'white',
           //  backgroundColor
           //   ? backgroundColor
           //   : theme.color.seletedBtn,
@@ -141,7 +141,7 @@ export const HyperTxt = props => {
         }}>
         <Text
           style={{
-              color:'white',
+            color: 'white',
             fontSize: getFontSize(12),
             fontFamily: theme.font.regular,
           }}>
@@ -150,7 +150,7 @@ export const HyperTxt = props => {
         <TouchableOpacity onPress={onPress}>
           <Text
             style={{
-              color:'white',
+              color: 'white',
               fontSize: getFontSize(13),
               fontFamily: theme.font.bold,
               marginLeft: '5%',
@@ -206,7 +206,16 @@ export const DropdownComp = props => {
     mandatory,
     lableName,
     value,
+    itemContainerStyle,
+    containerStyle,
+    selectedTextStyle,
+    itemStyles,
+    style,
     onChange,
+    inverted,
+    lableColor,
+    backgroundColor,
+    dropdownPosition,
   } = props;
   const isDarkMode = store.getState().auth.isDarkMode;
 
@@ -219,14 +228,13 @@ export const DropdownComp = props => {
         }}>
         <Text
           style={{
-            color: '#666666',
+            color: lableColor ? lableColor : '#666666',
             marginTop: '2.5%',
             paddingVertical: '2%',
-            fontFamily: theme.font.Helvetica,
-            fontSize: getFontSize(13),
-            fontWeight: '700',
+            fontFamily: theme.font.semiBold,
+            fontSize: getFontSize(12),
           }}>
-          {lableName} {''}
+          {lableName} 
         </Text>
         {mandatory && (
           <Text
@@ -249,10 +257,13 @@ export const DropdownComp = props => {
         style={[
           styles.dropdown,
           {
-            backgroundColor: isDarkMode
+            backgroundColor: backgroundColor
+              ? backgroundColor
+              : isDarkMode
               ? theme.color.darkTheme
               : theme.color.white,
-            borderColor: isDarkMode
+            borderColor:style ? style.borderColor :
+             isDarkMode
               ? theme.color.darkModeTextInputOutline
               : theme.color.normalModeTextInputOutline,
           },
@@ -268,15 +279,29 @@ export const DropdownComp = props => {
         selectedTextStyle={[
           styles.selectedTextStyle,
           {
-            color: isDarkMode ? theme.color.white : theme.color.primary,
+            color: selectedTextStyle
+              ? selectedTextStyle.color
+              : isDarkMode
+              ? theme.color.white
+              : theme.color.primary,
           },
         ]}
         inputSearchStyle={styles.inputSearchStyle}
-        containerStyle={styles.containerStyle}
+        containerStyle={{
+          borderRadius: 10,
+          backgroundColor: containerStyle
+            ? containerStyle.backgroundColor
+            : isDarkMode
+            ? theme.color.darkTheme
+            : 'white',
+          marginTop: '-2%',
+          overflow: 'hidden',
+        }}
         iconStyle={styles.iconStyle}
         itemContainerStyle={{
-          color: isDarkMode ? theme.color.darkTheme : theme.color.white,
-          backgroundColor: isDarkMode
+          backgroundColor: itemContainerStyle
+            ? itemContainerStyle.backgroundColor
+            : isDarkMode
             ? theme.color.darkTheme
             : theme.color.white,
           borderColor: isDarkMode ? '#666666' : '#666666',
@@ -284,12 +309,22 @@ export const DropdownComp = props => {
         renderItem={item => {
           return (
             <>
-              <View style={styles.item}>
+              <View
+                style={[
+                  styles.item,
+                  {
+                    overflow: 'hidden',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#f2f2f2',
+                  },
+                ]}>
                 <Text
                   style={[
                     styles.textItem,
                     {
                       color: theme.color.primary,
+                      // itemStyles ? itemStyles.color :  theme.color.primary,
+                      overflow: 'hidden',
                     },
                   ]}>
                   {item.label}
@@ -298,6 +333,7 @@ export const DropdownComp = props => {
             </>
           );
         }}
+       dropdownPosition = {dropdownPosition}
       />
     </>
   );
@@ -384,7 +420,7 @@ const styles = StyleSheet.create({
   lableStyle: {
     fontSize: getFontSize(12),
     fontWeight: '600',
-    fontFamily: theme.font.HelveticaBold,
+    fontFamily: theme.font.regular,
     color: '#666666',
   },
   dropdown: {
@@ -405,27 +441,28 @@ const styles = StyleSheet.create({
   },
   textItem: {
     flex: 1,
-    fontSize: 16,
+    fontSize: getFontSize(12),
+    fontFamily: theme.font.regular
+
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: getFontSize(12),
     color: isDarkMode ? '#ffffff' : theme.color.darkTheme,
+    fontFamily: theme.font.regular
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: getFontSize(12),
     color: isDarkMode ? 'green' : theme.color.darkTheme,
+    fontFamily: theme.font.regular
   },
-  containerStyle: {
-    borderRadius: 10,
-    backgroundColor: isDarkMode ? theme.color.darkTheme : 'white',
-  },
+
   iconStyle: {
     width: 20,
     height: 20,
   },
   inputSearchStyle: {
     height: 20,
-    fontSize: 16,
+    fontSize: getFontSize(14),
     backgroundColor: theme.color.darkTheme,
   },
 });

@@ -114,6 +114,19 @@ class DrawerItem extends Component {
           />
         ),
       },
+      {
+        id: 1,
+        lable: MsgConfig.myProfile,
+        route: 'CProfile',
+        icon: (
+          <VectorIcon
+            type={'FontAwesome'}
+            name={'user'}
+            size={getFontSize(23)}
+            color={textColorHandler()}
+          />
+        ),
+      },
 
       {
         id: 2,

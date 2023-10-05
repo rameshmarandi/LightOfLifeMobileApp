@@ -17,7 +17,12 @@ export const extractVideoId = youtubeUrl => {
   }
   return null; // Return null if no match found
 };
-
+export const changeDateFormat = (date, format, dateFormat) => {
+  if (dateFormat) {
+    return moment(date, dateFormat).format(format ? format : 'DD MMM, YY');
+  }
+  return moment(date).format(format ? format : 'DD MMM, YY');
+};
 export const backgroundColorHandler = ()=>{
   if(store.getState().auth.isDarkMode){
     return theme.color.darkTheme

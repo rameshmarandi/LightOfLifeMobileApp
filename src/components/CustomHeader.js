@@ -36,18 +36,18 @@ import {
 import {getYears, removeSpace} from '../components/commonFunction';
 
 const CustomHeader = props => {
-  const {Hamburger, backPress , screenTitle,centerLogo} = props;
+  const {Hamburger, backPress ,backgroundColor, screenTitle,centerLogo} = props;
   return (
     <>
       <SafeAreaView
         style={{
-          backgroundColor: backgroundColorHandler(),
+          backgroundColor: backgroundColor ? backgroundColor : backgroundColorHandler()
         }}>
         <View
           style={{
             width: '100%',
             paddingHorizontal: '4%',
-            backgroundColor: backgroundColorHandler(),
+            backgroundColor:backgroundColor? backgroundColor:  backgroundColorHandler(),
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -119,7 +119,7 @@ const CustomHeader = props => {
                   width: 47,
                   height:  45,
                   justifyContent:"center",
-                  backgroundColor: backgroundColorHandler(),
+                  backgroundColor:backgroundColor? backgroundColor:  backgroundColorHandler(),
                   borderRadius: 100,
                 },
               ]}

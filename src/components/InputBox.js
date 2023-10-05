@@ -51,7 +51,7 @@ function arrayObjtoObj(data) {
 function InputBox(props) {
   const isDarkMode = store.getState().auth.isDarkMode
   const {style, onPressIn, onPressOut} = props;
-  const {onKeyPress, onChangeText, disableSpace, mandatory, onFocus, onBlur} =
+  const {onKeyPress,returnKeyType, cursorColor, ref, onSubmitEditing , onChangeText, disableSpace, mandatory, onFocus, onBlur} =
     props;
   const datePciker =
     typeof props.datePciker === 'boolean' ? props.datePciker : false;
@@ -257,7 +257,7 @@ function InputBox(props) {
   };
   return (
     <>
-      {datePciker && (
+    {datePciker && (
         <DatePicker
           modal
           theme="light"
@@ -290,16 +290,13 @@ function InputBox(props) {
             },
             {
               color: '#666666',
-              fontFamily: theme.font.Helvetica,
+              fontFamily: theme.font.semiBold,
               fontSize: getFontSize(13),
-              fontWeight: '700',
+              // fontWeight: '700',
             },
             {width: getContentSize().width},
             style && style.alignSelf && {alignSelf: style.alignSelf},
-            labelStyle,
-            // inFocused && {
-            //   color: theme.color.secondPrimary,
-            // },
+            labelStyle,          
           ]}>
           {label}
           {mandatory && (
@@ -383,6 +380,9 @@ function InputBox(props) {
               ? keyboardType
               : 'default'
           }
+          onSubmitEditing = {onSubmitEditing}
+          returnKeyType = {returnKeyType}
+          
           maxLength={countrycodeDropdown ? 10 : maxLength}
           outlineColor={outlineColor ? outlineColor : isDarkMode? "grey":outlineColor}
           activeOutlineColor={activeOutlineColor ?activeOutlineColor : isDarkMode? theme.color.primary:activeOutlineColor}
@@ -397,6 +397,8 @@ function InputBox(props) {
             },
             roundness: getResWidth(7),
           }}
+
+      
           multiline={multiline}
           autoCapitalize={false}
           editable={
@@ -417,7 +419,9 @@ function InputBox(props) {
               onPressOut();
             }
           }}
-          cursorColor={isDarkMode ? theme.color.white:theme.color.primary}
+          cursorColor={cursorColor ? cursorColor : isDarkMode ? theme.color.white:theme.color.primary}
+          ref = {ref}
+          // cursorColor ={"white"}
           underlineColor={theme.color.placeholder}
           numberOfLines={10}
           left={
@@ -439,7 +443,7 @@ function InputBox(props) {
             (secureTextEntry || rightIcon) && (
               <TextInput.Icon
                 style={{
-                  top: '13%',
+                
                 }}
                 onPress={() => {
                   setShowText(!showText);
@@ -451,7 +455,7 @@ function InputBox(props) {
                         style={(alignSelf = 'center')}
                         type="FontAwesome5"
                         name={showText ? 'eye-slash' : 'eye'}
-                        color={theme.color.primary}
+                        color={'white'}
                         size={getFontSize(16)}
                       />
                     );
@@ -539,7 +543,8 @@ function InputBox(props) {
                   ]}>
                   <RNInput
                     {...styleprops}
-                    placeholderTextColor={'#7F7F7F'}
+                  ref = {ref}
+                    placeholderTextColor={placeholderTextColor ?placeholderTextColor :'#7F7F7F'}
                     style={[
                       contentStyle,
                       getTextStyle(),

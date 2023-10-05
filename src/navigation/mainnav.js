@@ -40,6 +40,11 @@ export default function MainNavigation(props) {
         options={optinsForScreens()}
       />
       <MainStack.Screen
+        name={`CProfile`}
+        component={AllScreens.CProfile}
+        options={optinsForScreens()}
+      />
+      <MainStack.Screen
         name={`FreeResource`}
         component={AllScreens.FreeResource}
         options={optinsForScreens()}

@@ -4,6 +4,7 @@ import  Login from './Admin/Auth/Login';
 import  ForgotPassword from './Admin/Auth/ForgotPassword';
 import  ChangePassword from './Admin/Auth/ChangePassword';
 
+import CProfile from './Client/CProfile';
 import DrawerItem from './Client/Drawer/DrawerItem';
 import Events from './Client/Events';
 import FreeResource from './Client/FreeResource';
@@ -12,8 +13,10 @@ import ContactWithUs from './Client/Support/ContactWithUs';
 import Feedback from './Client/Support/Feedback';
 
 const ClientScreen = {
+  CProfile,
   HomePage,
   DrawerItem,
+
   FreeResource,
   Events,
   ContactWithUs,
