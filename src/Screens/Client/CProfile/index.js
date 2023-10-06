@@ -1,5 +1,14 @@
 import React, {Component} from 'react';
-import {Text, View, Switch, Image, FlatList, SafeAreaView} from 'react-native';
+import {
+  Text,
+  View,
+  Switch,
+  Image,
+  ScrollView,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import theme from '../../../utility/theme';
 import {
   backgroundColorHandler,
@@ -22,9 +31,12 @@ import {
   getResHeight,
   getResWidth,
 } from '../../../utility/responsive';
+import {Formik} from 'formik';
 import {Button} from 'react-native-elements';
 import {VectorIcon} from '../../../components/VectorIcon';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import InputBox from '../../../components/InputBox';
+import {CommonButton, DropdownComp} from '../../../components/commonComp';
 class CProfile extends Component {
   constructor(props) {
     super(props);
@@ -84,36 +96,341 @@ class CProfile extends Component {
                               justifyContent: 'center',
                               alignItems: 'center',
                             }}>
-                            <VectorIcon
-                              type={'FontAwesome'}
-                              name={'user-circle-o'}
-                              size={getFontSize(110)}
-                              color={theme.color.primary}
-                            />
-                            
-                              <TouchableOpacity style={{
-                            position:"absolute",
-                            zIndex:99999
-                            // 
-                            // bottom : 
-                          }}>
-
+                            <View
+                              style={{
+                                position: 'absolute',
+                              }}>
                               <VectorIcon
+                                type={'FontAwesome'}
+                                name={'user-circle-o'}
+                                size={getFontSize(110)}
+                                color={theme.color.primary}
+                              />
+                            </View>
+                          </View>
+                          <TouchableOpacity
+                            style={{
+                              // position:"absolute",
+                              right: 0,
+                              marginTop: '-6%',
+                              // bottom:0
+                              // zIndex:99999
+                            }}>
+                            <VectorIcon
                               type={'Ionicons'}
                               name={'camera'}
                               size={getFontSize(30)}
-                              color = {"red"}
-                              // color={theme.color.primary}
+                              color={'red'}
                             />
                           </TouchableOpacity>
-                          </View>
-                        
                         </View>
+                      </>
+                    );
+                  case 1:
+                    return (
+                      <>
+                        <Formik
+                          validationSchema={theme.validationSchema.login}
+                          initialValues={{
+                            firstName: '',
+                            lastName: '',
+
+                            email: '',
+                            mobile: '',
+                            password: '',
+                            DOB: '',
+                            gender: '',
+                            dailyVerbs: '',
+                          }}
+                          onSubmit={async () => {}}>
+                          {({
+                            values,
+                            isValid,
+                            dirty,
+                            errors,
+                            touched,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                            setFieldValue,
+                            setFieldTouched,
+                          }) => (
+                            <>
+                              <ScrollView
+                                style={{
+                                  flex: 1,
+                                  paddingBottom: '70%',
+                                }}>
+                                <View style={{}}>
+                                  <View
+                                    style={{
+                                      width: '95%',
+                                      alignSelf: 'center',
+                                    }}>
+                                    <InputBox
+                                      label={'First name'}
+                                      mandatory
+                                      returnKeyType={'next'}
+                                      cursorColor={styles.whiteColor}
+                                      placeholder={'Enter first name'}
+                                      value={values.firstName}
+                                      errorText={errors.firstName}
+                                      // onSubmitEditing={() => {
+                                      //   console.log("this.lastNameInput",this.lastNameInput.current)
+                                      //   // this.lastNameInput.focus()
+                                      // }}
+                                      onChangeText={text =>
+                                        setFieldValue('firstName', text)
+                                      }
+                                      onFocus={() =>
+                                        setFieldTouched('firstName')
+                                      }
+                                      onBlur={() => handleBlur('firstName')}
+                                      outlineColor={theme.color.dimWhite}
+                                      placeholderTextColor={
+                                        theme.color.dimWhite
+                                      }
+                                      labelStyle={{
+                                        color: styles.whiteColor,
+                                      }}
+                                      activeOutlineColor={styles.whiteColor}
+                                    />
+                                    <InputBox
+                                      label={'Last name'}
+                                      mandatory
+                                      returnKeyType={'next'}
+                                      // onSubmitEditing={() => this.emailInput.focus()}
+                                      // ref={input => (this.lastNameInput = input)}
+                                      ref={this.textInputRef}
+                                      cursorColor={styles.whiteColor}
+                                      placeholder={
+                                        'Enter last name or sure name'
+                                      }
+                                      value={values.lastName}
+                                      errorText={errors.lastName}
+                                      onChangeText={text =>
+                                        setFieldValue('lastName', text)
+                                      }
+                                      onFocus={() =>
+                                        setFieldTouched('lastName')
+                                      }
+                                      onBlur={() => handleBlur('lastName')}
+                                      outlineColor={theme.color.dimWhite}
+                                      placeholderTextColor={
+                                        theme.color.dimWhite
+                                      }
+                                      labelStyle={{
+                                        color: styles.whiteColor,
+                                      }}
+                                      activeOutlineColor={styles.whiteColor}
+                                    />
+                                    <InputBox
+                                      mandatory
+                                      label={'Email'}
+                                      cursorColor={styles.whiteColor}
+                                      ref={input => (this.emailInput = input)}
+                                      returnKeyType={'done'}
+                                      placeholder={'Enter email'}
+                                      keyboardType={'email-address'}
+                                      value={values.email}
+                                      autoCapitalize={'none'}
+                                      errorText={errors.email}
+                                      onChangeText={text =>
+                                        setFieldValue('email', text)
+                                      }
+                                      onFocus={() => setFieldTouched('email')}
+                                      onBlur={() => handleBlur('email')}
+                                      outlineColor={theme.color.dimWhite}
+                                      placeholderTextColor={
+                                        theme.color.dimWhite
+                                      }
+                                      labelStyle={{
+                                        color: 'white',
+                                      }}
+                                      activeOutlineColor={'white'}
+                                    />
+                                    <InputBox
+                                      mandatory
+                                      label={'Mobile number'}
+                                      cursorColor={styles.whiteColor}
+                                      placeholder={'Enter mobile number'}
+                                      keyboardType={'numeric'}
+                                      value={values.mobile}
+                                      autoCapitalize={'none'}
+                                      maxLength={10}
+                                      errorText={errors.mobile}
+                                      onChangeText={text =>
+                                        setFieldValue('mobile', text)
+                                      }
+                                      onFocus={() => setFieldTouched('mobile')}
+                                      onBlur={() => handleBlur('mobile')}
+                                      outlineColor={theme.color.dimWhite}
+                                      placeholderTextColor={
+                                        theme.color.dimWhite
+                                      }
+                                      labelStyle={{
+                                        color: 'white',
+                                      }}
+                                      activeOutlineColor={'white'}
+                                    />
+
+                                    <DropdownComp
+                                      mandatory
+                                      dropdownData={[
+                                        {
+                                          label: 'Male',
+                                          value: 'Male',
+                                        },
+                                        {
+                                          label: 'Female',
+                                          value: 'Female',
+                                        },
+                                      ]}
+                                      lableName={'Gender'}
+                                      dropDownPlaceholder={'Select your gender'}
+                                      vlaue={''}
+                                      style={{
+                                        borderColor: theme.color.dimWhite,
+                                      }}
+                                      lableColor={'white'}
+                                      backgroundColor={'none'}
+                                      itemContainerStyle={{
+                                        backgroundColor: 'none',
+                                      }}
+                                      containerStyle={{
+                                        backgroundColor: 'white',
+                                      }}
+                                      selectedTextStyle={{
+                                        color: 'white',
+                                      }}
+                                      itemStyles={{
+                                        color: 'black',
+                                      }}
+                                      onChange={item => {
+                                        // setPrayerCate(item.vlaue);
+                                      }}
+                                    />
+                                    <InputBox
+                                      mandatory
+                                      datePciker
+                                      editable={false}
+                                      outlineColor={theme.color.dimWhite}
+                                      label={'Date of birth'}
+                                      placeholder={'Select DOB'}
+                                      value={
+                                        values.DOB == null ? '' : values.DOB
+                                      }
+                                      errorText={touched.DOB && errors.DOB}
+                                      onChangeText={text => {
+                                        setFieldValue('DOB', text);
+                                      }}
+                                      onFocus={() => setFieldTouched('DOB')}
+                                      onBlur={() => handleBlur('DOB')}
+                                      style={{backgroundColor: '#FFFFFF'}}
+                                      placeholderTextColor={
+                                        theme.color.dimWhite
+                                      }
+                                      labelStyle={{
+                                        fontSize: getFontSize(12),
+                                        fontWeight: '600',
+                                        fontFamily: theme.font.HelveticaBold,
+                                        color: 'white',
+                                      }}
+                                      rightIcon={
+                                        <VectorIcon
+                                          type={'Feather'}
+                                          name={'calendar'}
+                                          size={getFontSize(20)}
+                                          style={{
+                                            alignItem: 'center',
+                                            color: 'white',
+                                          }}
+                                        />
+                                      }
+                                    />
+                                    <DropdownComp
+                                      mandatory
+                                      dropdownData={[
+                                        {
+                                          label: 'Hindi',
+                                          value: 'Hindi',
+                                        },
+                                        {
+                                          label: 'English',
+                                          value: 'English',
+                                        },
+                                        {
+                                          label: 'Marathi',
+                                          value: 'Marathi',
+                                        },
+                                      ]}
+                                      lableName={
+                                        'Which language would you like to receive daily verbs in?'
+                                      }
+                                      dropDownPlaceholder={
+                                        'Select one language'
+                                      }
+                                      vlaue={''}
+                                      lableColor={'white'}
+                                      backgroundColor={'none'}
+                                      itemContainerStyle={{
+                                        backgroundColor: 'none',
+                                      }}
+                                      containerStyle={{
+                                        backgroundColor: 'white',
+                                      }}
+                                      style={{
+                                        borderColor: '#f2f2f2',
+                                      }}
+                                      selectedTextStyle={{
+                                        color: 'white',
+                                      }}
+                                      itemStyles={{
+                                        color: 'black',
+                                      }}
+                                      onChange={item => {
+                                        // setPrayerCate(item.vlaue);
+                                      }}
+                                      dropdownPosition={'top'}
+                                    />
+                                  </View>
+                                </View>
+                              </ScrollView>
+                            </>
+                          )}
+                        </Formik>
                       </>
                     );
                 }
               }}
             />
+            <View
+              style={{
+                width: '100%',
+                position: 'absolute',
+                bottom: 0,
+                paddingVertical: '15%',
+                backgroundColor: backgroundColorHandler(),
+              }}>
+              <View
+                style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  position: 'absolute',
+                  marginTop: '-6%',
+                }}>
+                <CommonButton
+                  title={'Update'}
+                  // disabled={!(dirty && isValid)}
+                  onPress={async () => {}}
+                  isLoading={this.state.isLoading}
+                  containerStyle={{
+                    marginTop: getResHeight(25),
+                  }}
+                />
+              </View>
+            </View>
           </View>
         </SafeAreaView>
       </>
@@ -185,7 +502,9 @@ const CoverPictureComp = () => {
     </>
   );
 };
-
+const styles = StyleSheet.create({
+  whiteColor: 'white',
+});
 const mapStateToProps = state => ({
   isDarkMode: state.auth.isDarkMode,
 });

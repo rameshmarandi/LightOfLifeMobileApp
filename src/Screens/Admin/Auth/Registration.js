@@ -137,17 +137,10 @@ class Registration extends Component {
                     flex: 1,
                     paddingBottom:"70%"
                   }}>
-                  {/* <KeyboardAvoidingView
-                    style={{flex: 1}}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    enabled> */}
+              
                   <View
                     style={{
-                      // flex: 1,
-                      // justifyContent: 'center',
-                      // alignItems: 'center',
-
-                      // paddingBottom: '20%',
+                    
                     }}>
                     <View
                       style={{
@@ -416,7 +409,7 @@ class Registration extends Component {
                       )}
                     </View>
                   </View>
-                  {/* </KeyboardAvoidingView> */}
+            
                 </ScrollView>
                 <View
                   style={{

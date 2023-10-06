@@ -106,7 +106,7 @@ export const CommonButton = props => {
         {
           width: '100%',
           height: '100%',
-          borderRadius: getResWidth(8),
+          borderRadius: 60,
           backgroundColor: 'white',
           //  backgroundColor
           //   ? backgroundColor
