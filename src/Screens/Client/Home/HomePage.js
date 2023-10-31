@@ -123,7 +123,7 @@ class HomePage extends Component {
           flex: 1,
           backgroundColor: backgroundColorHandler(),
         }}>
-          <StatusBarComp/>
+          {/* <StatusBarComp/> */}
         <View>
           <CustomHeader
             Hamburger={() => {

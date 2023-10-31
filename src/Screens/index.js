@@ -1,8 +1,15 @@
-// // ============= Auth Module ==================
+// *************** Auth Sections ******************
 import  Registration from './Admin/Auth/Registration';
 import  Login from './Admin/Auth/Login';
 import  ForgotPassword from './Admin/Auth/ForgotPassword';
 import  ChangePassword from './Admin/Auth/ChangePassword';
+
+//  *************** Admin Section Modules ******************
+
+
+
+import SpecialMoment from "./Admin/SpecialMoment"
+
 
 import CProfile from './Client/CProfile';
 import DrawerItem from './Client/Drawer/DrawerItem';
@@ -11,6 +18,7 @@ import FreeResource from './Client/FreeResource';
 import HomePage from './Client/Home/HomePage';
 import ContactWithUs from './Client/Support/ContactWithUs';
 import Feedback from './Client/Support/Feedback';
+import { Section } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 
 const ClientScreen = {
   CProfile,
@@ -28,8 +36,10 @@ const ClientScreen = {
 const AdminScreens = {
   Login ,
   Registration,
-ForgotPassword , 
-ChangePassword
+  ForgotPassword , 
+  ChangePassword,
+
+  SpecialMoment,
 
 }
 export default AllScreens = {

@@ -26,6 +26,7 @@ import {
   getAsyncValue,
   setAsyncValue,
   textColorHandler,
+  textInDarkMode,
 } from '../../../components/commonHelper';
 import MsgConfig from '../../../config/MsgConfig';
 import {store} from '../../../utility/store';
@@ -36,7 +37,7 @@ class DrawerItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      darkMode: false,
+      darkMode: true,
     };
   }
   _renderItem = ({item, index}) => {
@@ -117,7 +118,8 @@ class DrawerItem extends Component {
       {
         id: 1,
         lable: MsgConfig.myProfile,
-        route: 'CProfile',
+        route: 'SpecialMoment',
+        // route: 'CProfile',
         icon: (
           <VectorIcon
             type={'FontAwesome'}
@@ -272,7 +274,7 @@ class DrawerItem extends Component {
               </Text>
               <Switch
                 trackColor={{false: '#F9EDEA', true: theme.color.primary}}
-                thumbColor={theme.color.primary}
+                thumbColor={isDarkMode ?"white": theme.color.primary}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={this.handleDarkMode}
                 value={isDarkMode}
@@ -301,7 +303,7 @@ class DrawerItem extends Component {
                 type={'FontAwesome'}
                 name={'lock'}
                 size={getFontSize(23)}
-                color={'white'}
+                color={textInDarkMode()}
               />
             }
           />

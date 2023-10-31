@@ -32,7 +32,7 @@ import {VectorIcon} from './VectorIcon';
 
 import {Dropdown} from 'react-native-element-dropdown';
 import {store} from '../utility/store';
-import {backgroundColorHandler, textColorHandler} from './commonHelper';
+import {backgroundColorHandler, bgInDarkMode, inAcitveTextInput, textColorHandler, textInDarkMode} from './commonHelper';
 const isDarkMode = store.getState().auth.isDarkMode;
 
 export const CommonModal = props => {
@@ -89,7 +89,7 @@ export const CommonButton = props => {
           fontSize: getFontSize(14),
           fontFamily: theme.font.semiBold,
           fontWeight: 600,
-          color: theme.color.primary,
+          color:textInDarkMode(),
         },
         titleStyle,
       ]}
@@ -107,10 +107,7 @@ export const CommonButton = props => {
           width: '100%',
           height: '100%',
           borderRadius: 60,
-          backgroundColor: 'white',
-          //  backgroundColor
-          //   ? backgroundColor
-          //   : theme.color.seletedBtn,
+          backgroundColor: bgInDarkMode()
         },
         buttonStyle,
       ]}
@@ -262,10 +259,10 @@ export const DropdownComp = props => {
               : isDarkMode
               ? theme.color.darkTheme
               : theme.color.white,
-            borderColor:style ? style.borderColor :
-             isDarkMode
-              ? theme.color.darkModeTextInputOutline
-              : theme.color.normalModeTextInputOutline,
+            borderColor:style ? style.borderColor :inAcitveTextInput()
+            //  isDarkMode
+            //   ? theme.color.darkModeTextInputOutline
+            //   : theme.color.normalModeTextInputOutline,
           },
         ]}
         placeholderStyle={[
@@ -323,8 +320,7 @@ export const DropdownComp = props => {
                     styles.textItem,
                     {
                       color: theme.color.primary,
-                      // itemStyles ? itemStyles.color :  theme.color.primary,
-                      overflow: 'hidden',
+                        overflow: 'hidden',
                     },
                   ]}>
                   {item.label}
@@ -360,7 +356,7 @@ export const CommonButtonComp = props => {
       titleStyle={[
         styles.btnTitleStyle,
         {
-          color: 'white',
+          color: textInDarkMode(),
         },
       ]}
       disabledStyle={{
@@ -384,7 +380,7 @@ export const CommonButtonComp = props => {
           width: '100%',
           height: '100%',
           borderRadius: 100,
-          backgroundColor: theme.color.primary,
+          backgroundColor: bgInDarkMode(),
         },
       ]}
       {...props}

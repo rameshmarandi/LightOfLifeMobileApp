@@ -6,15 +6,22 @@ import {
   Image,
   ScrollView,
   StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
   FlatList,
   SafeAreaView,
 } from 'react-native';
 import theme from '../../../utility/theme';
 import {
   backgroundColorHandler,
+  bgInDarkMode,
+  cursorColorInDarkMode,
   getAsyncValue,
+  inAcitveTextInput,
+  placeHolderInDarkMode,
   setAsyncValue,
   textColorHandler,
+  textInDarkMode,
 } from '../../../components/commonHelper';
 
 import {connect} from 'react-redux';
@@ -34,7 +41,6 @@ import {
 import {Formik} from 'formik';
 import {Button} from 'react-native-elements';
 import {VectorIcon} from '../../../components/VectorIcon';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import InputBox from '../../../components/InputBox';
 import {CommonButton, DropdownComp} from '../../../components/commonComp';
 class CProfile extends Component {
@@ -82,14 +88,13 @@ class CProfile extends Component {
                     return (
                       <>
                         <CoverPictureComp />
-                        <View style={{}}>
+                        <TouchableWithoutFeedback style={{}}>
                           <View
                             style={{
                               height: 140,
                               width: 140,
                               backgroundColor: theme.color.iceWhite,
                               borderRadius: 100,
-
                               marginTop: '-20%',
                               marginLeft: '4%',
                               borderColor: theme.color.error,
@@ -108,22 +113,7 @@ class CProfile extends Component {
                               />
                             </View>
                           </View>
-                          <TouchableOpacity
-                            style={{
-                              // position:"absolute",
-                              right: 0,
-                              marginTop: '-6%',
-                              // bottom:0
-                              // zIndex:99999
-                            }}>
-                            <VectorIcon
-                              type={'Ionicons'}
-                              name={'camera'}
-                              size={getFontSize(30)}
-                              color={'red'}
-                            />
-                          </TouchableOpacity>
-                        </View>
+                        </TouchableWithoutFeedback>
                       </>
                     );
                   case 1:
@@ -172,7 +162,7 @@ class CProfile extends Component {
                                       label={'First name'}
                                       mandatory
                                       returnKeyType={'next'}
-                                      cursorColor={styles.whiteColor}
+                                      cursorColor={cursorColorInDarkMode()}
                                       placeholder={'Enter first name'}
                                       value={values.firstName}
                                       errorText={errors.firstName}
@@ -187,14 +177,12 @@ class CProfile extends Component {
                                         setFieldTouched('firstName')
                                       }
                                       onBlur={() => handleBlur('firstName')}
-                                      outlineColor={theme.color.dimWhite}
-                                      placeholderTextColor={
-                                        theme.color.dimWhite
-                                      }
+                                      outlineColor={inAcitveTextInput()}
+                                      placeholderTextColor={placeHolderInDarkMode()}
                                       labelStyle={{
-                                        color: styles.whiteColor,
+                                        color: bgInDarkMode(),
                                       }}
-                                      activeOutlineColor={styles.whiteColor}
+                                      // activeOutlineColor={bgInDarkMode()}
                                     />
                                     <InputBox
                                       label={'Last name'}
@@ -203,7 +191,7 @@ class CProfile extends Component {
                                       // onSubmitEditing={() => this.emailInput.focus()}
                                       // ref={input => (this.lastNameInput = input)}
                                       ref={this.textInputRef}
-                                      cursorColor={styles.whiteColor}
+                                      cursorColor={cursorColorInDarkMode()}
                                       placeholder={
                                         'Enter last name or sure name'
                                       }
@@ -216,19 +204,17 @@ class CProfile extends Component {
                                         setFieldTouched('lastName')
                                       }
                                       onBlur={() => handleBlur('lastName')}
-                                      outlineColor={theme.color.dimWhite}
-                                      placeholderTextColor={
-                                        theme.color.dimWhite
-                                      }
+                                       outlineColor={inAcitveTextInput()}
+                                      placeholderTextColor={placeHolderInDarkMode()}
                                       labelStyle={{
-                                        color: styles.whiteColor,
+                                        color: bgInDarkMode(),
                                       }}
-                                      activeOutlineColor={styles.whiteColor}
+                                      activeOutlineColor={bgInDarkMode()}
                                     />
                                     <InputBox
                                       mandatory
                                       label={'Email'}
-                                      cursorColor={styles.whiteColor}
+                                      cursorColor={cursorColorInDarkMode()}
                                       ref={input => (this.emailInput = input)}
                                       returnKeyType={'done'}
                                       placeholder={'Enter email'}
@@ -241,19 +227,17 @@ class CProfile extends Component {
                                       }
                                       onFocus={() => setFieldTouched('email')}
                                       onBlur={() => handleBlur('email')}
-                                      outlineColor={theme.color.dimWhite}
-                                      placeholderTextColor={
-                                        theme.color.dimWhite
-                                      }
+                                     outlineColor={inAcitveTextInput()}
+                                      placeholderTextColor={placeHolderInDarkMode()}
                                       labelStyle={{
-                                        color: 'white',
+                                        color: bgInDarkMode(),
                                       }}
-                                      activeOutlineColor={'white'}
+                                    activeOutlineColor={bgInDarkMode()}
                                     />
                                     <InputBox
                                       mandatory
                                       label={'Mobile number'}
-                                      cursorColor={styles.whiteColor}
+                                      cursorColor={cursorColorInDarkMode()}
                                       placeholder={'Enter mobile number'}
                                       keyboardType={'numeric'}
                                       value={values.mobile}
@@ -265,14 +249,13 @@ class CProfile extends Component {
                                       }
                                       onFocus={() => setFieldTouched('mobile')}
                                       onBlur={() => handleBlur('mobile')}
-                                      outlineColor={theme.color.dimWhite}
-                                      placeholderTextColor={
-                                        theme.color.dimWhite
-                                      }
+                                      outlineColor={inAcitveTextInput()}
+                                      
                                       labelStyle={{
-                                        color: 'white',
+                                        color: bgInDarkMode(),
                                       }}
-                                      activeOutlineColor={'white'}
+                                      placeholderTextColor={placeHolderInDarkMode()}
+                                    activeOutlineColor={bgInDarkMode()}
                                     />
 
                                     <DropdownComp
@@ -291,18 +274,18 @@ class CProfile extends Component {
                                       dropDownPlaceholder={'Select your gender'}
                                       vlaue={''}
                                       style={{
-                                        borderColor: theme.color.dimWhite,
+                                        borderColor: inAcitveTextInput(),
                                       }}
-                                      lableColor={'white'}
+                                      lableColor={bgInDarkMode()}
                                       backgroundColor={'none'}
                                       itemContainerStyle={{
                                         backgroundColor: 'none',
                                       }}
                                       containerStyle={{
-                                        backgroundColor: 'white',
+                                        backgroundColor:'white',
                                       }}
                                       selectedTextStyle={{
-                                        color: 'white',
+                                        color: bgInDarkMode(),
                                       }}
                                       itemStyles={{
                                         color: 'black',
@@ -315,7 +298,7 @@ class CProfile extends Component {
                                       mandatory
                                       datePciker
                                       editable={false}
-                                      outlineColor={theme.color.dimWhite}
+                                      outlineColor={inAcitveTextInput()}
                                       label={'Date of birth'}
                                       placeholder={'Select DOB'}
                                       value={
@@ -329,13 +312,13 @@ class CProfile extends Component {
                                       onBlur={() => handleBlur('DOB')}
                                       style={{backgroundColor: '#FFFFFF'}}
                                       placeholderTextColor={
-                                        theme.color.dimWhite
+                                      placeHolderInDarkMode()
                                       }
                                       labelStyle={{
                                         fontSize: getFontSize(12),
                                         fontWeight: '600',
                                         fontFamily: theme.font.HelveticaBold,
-                                        color: 'white',
+                                        color: bgInDarkMode(),
                                       }}
                                       rightIcon={
                                         <VectorIcon
@@ -372,7 +355,7 @@ class CProfile extends Component {
                                         'Select one language'
                                       }
                                       vlaue={''}
-                                      lableColor={'white'}
+                                      lableColor={bgInDarkMode()}
                                       backgroundColor={'none'}
                                       itemContainerStyle={{
                                         backgroundColor: 'none',
@@ -384,10 +367,10 @@ class CProfile extends Component {
                                         borderColor: '#f2f2f2',
                                       }}
                                       selectedTextStyle={{
-                                        color: 'white',
+                                        color: textInDarkMode(),
                                       }}
                                       itemStyles={{
-                                        color: 'black',
+                                        color: textInDarkMode(),
                                       }}
                                       onChange={item => {
                                         // setPrayerCate(item.vlaue);
@@ -470,7 +453,7 @@ const CoverPictureComp = () => {
               <VectorIcon
                 type={'FontAwesome5'}
                 name={'edit'}
-                size={getFontSize(18)}
+                size={getFontSize(15)}
                 color={theme.color.primary}
                 style={{
                   marginLeft: '10%',
@@ -480,8 +463,8 @@ const CoverPictureComp = () => {
             iconContainerStyle={{}}
             containerStyle={[
               {
-                width: getResWidth(41),
-                height: getResHeight(48),
+                width: getResWidth(35),
+                height: getResHeight(40),
                 justifyContent: 'center',
                 // alignSelf:"center",
                 // alignItems:"center",

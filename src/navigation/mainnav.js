@@ -39,6 +39,16 @@ export default function MainNavigation(props) {
         component={AllScreens.HomePage}
         options={optinsForScreens()}
       />
+
+      {/* Admin sections  Start*/}
+      <MainStack.Screen
+        name={`SpecialMoment`}
+        component={AllScreens.SpecialMoment}
+        options={optinsForScreens()}
+      />
+
+      {/* Admin sections  End*/}
+
       <MainStack.Screen
         name={`CProfile`}
         component={AllScreens.CProfile}

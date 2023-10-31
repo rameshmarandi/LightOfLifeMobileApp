@@ -26,7 +26,7 @@ import {
 } from '../utility/responsive';
 import theme from '../utility/theme';
 import {VectorIcon} from '../components/VectorIcon';
-import {changeDateFormat} from '../components/commonHelper';
+import {bgInDarkMode, changeDateFormat, cursorColorInDarkMode, inAcitveTextInput, placeHolderInDarkMode} from '../components/commonHelper';
 import {getYears, removeSpace} from '../components/commonFunction';
 import { store } from '../utility/store';
 
@@ -289,7 +289,7 @@ function InputBox(props) {
               marginTop: getResHeight(12),
             },
             {
-              color: '#666666',
+              color: bgInDarkMode(),
               fontFamily: theme.font.semiBold,
               fontSize: getFontSize(13),
               // fontWeight: '700',
@@ -384,8 +384,8 @@ function InputBox(props) {
           returnKeyType = {returnKeyType}
           
           maxLength={countrycodeDropdown ? 10 : maxLength}
-          outlineColor={outlineColor ? outlineColor : isDarkMode? "grey":outlineColor}
-          activeOutlineColor={activeOutlineColor ?activeOutlineColor : isDarkMode? theme.color.primary:activeOutlineColor}
+          outlineColor={outlineColor ? outlineColor :inAcitveTextInput()}
+          activeOutlineColor={activeOutlineColor ?activeOutlineColor : placeHolderInDarkMode()}
           // disabled={disabled}
           theme={{
             colors: {
@@ -419,7 +419,7 @@ function InputBox(props) {
               onPressOut();
             }
           }}
-          cursorColor={cursorColor ? cursorColor : isDarkMode ? theme.color.white:theme.color.primary}
+          cursorColor={cursorColor ? cursorColor : cursorColorInDarkMode()}
           ref = {ref}
           // cursorColor ={"white"}
           underlineColor={theme.color.placeholder}
@@ -544,7 +544,7 @@ function InputBox(props) {
                   <RNInput
                     {...styleprops}
                   ref = {ref}
-                    placeholderTextColor={placeholderTextColor ?placeholderTextColor :'#7F7F7F'}
+                    placeholderTextColor={placeholderTextColor ?placeholderTextColor :placeHolderInDarkMode()}
                     style={[
                       contentStyle,
                       getTextStyle(),
